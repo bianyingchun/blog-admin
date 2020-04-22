@@ -13,6 +13,7 @@ export default [
   {
     path: "/login",
     component: Login,
+    exact: false,
   },
   {
     path: "/logout",
@@ -49,3 +50,7 @@ export default [
     ],
   },
 ];
+
+// https://blog.csdn.net/qq_35117024/article/details/83750982
+// https://blog.csdn.net/Chad97/article/details/89339465
+// https://www.jianshu.com/p/a2a9b469a422
