@@ -14,6 +14,18 @@ export interface IRouteItem {
 
 export interface IWithSubRoutesProps extends IRouteItem, RouteComponentProps {}
 
-export interface IMainProps extends RouteComponentProps{
-  routes?:Array<IRouteItem>
+export interface IMainProps {
+  routes?: Array<IRouteItem>;
+}
+
+export interface IMenuProps{
+  collapsed:boolean
+}
+
+export interface menuType {
+  title: string,
+  key: string,
+  icon?: string,
+  path?: string,
+  children?: menuType[]
 }

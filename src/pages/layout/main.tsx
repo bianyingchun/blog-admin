@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { withRouter } from "react-router-dom";
 import { IMainProps } from "src/types";
 import { RouteWithSubRoutes } from "src/router";
 const Main: React.FC<IMainProps> = (props) => {
@@ -14,4 +13,4 @@ const Main: React.FC<IMainProps> = (props) => {
   );
 };
 
-export default withRouter(Main);
+export default Main;
