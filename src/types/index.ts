@@ -25,7 +25,7 @@ export interface IMenuProps{
 export interface menuType {
   title: string,
   key: string,
-  icon?: string,
+  icon?:any,
   path?: string,
   children?: menuType[]
 }

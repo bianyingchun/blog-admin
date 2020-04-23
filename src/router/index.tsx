@@ -58,6 +58,7 @@ export function RouteWithSubRoutes(route: IRouteItem) {
   return (
     <Route
       path={route.path}
+      exact={route.exact}
       render={(props) => <route.component {...props} {...route} />}
     />
   );
