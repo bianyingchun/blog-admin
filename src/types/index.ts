@@ -29,3 +29,21 @@ export interface menuType {
   path?: string,
   children?: menuType[]
 }
+
+export interface IEditProps{
+  content:string,
+  handleEditChange:(content:string, editContent:string) => void
+}
+
+interface FieldData {
+  name: string[];
+  value: any;
+  touched: boolean;
+  validating: boolean;
+  errors: string[];
+}
+
+export interface IBaseInfoProps{
+  onChange: (fields: FieldData[]) => void;
+  fields: FieldData[];
+}

@@ -14,7 +14,11 @@ const AdminMenu: React.FC<IMenuProps> = ({ collapsed }) => {
     setOpenKey([key]);
   }, [location.pathname]);
   const handleOpen = (path: string) => {
-    setOpenKey([path]);
+    if (path === openKey[0]) {
+      setOpenKey([""]);
+    } else {
+      setOpenKey([path]);
+    }
   };
   const hanleClick = (path?: string) => {
     path && history.push(path);

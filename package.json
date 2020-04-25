@@ -16,6 +16,7 @@
     "customize-cra": "^0.9.1",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
+    "markdown-it": "^10.0.0",
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.5",
@@ -47,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@types/markdown-it": "^10.0.0",
     "@types/react-loadable": "^5.5.3",
     "@types/react-router-dom": "^5.1.3"
   }
