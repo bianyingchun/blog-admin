@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
+import "./style.scss";
+const AricleComments: React.FC = () => {
+  return <div>AricleComments</div>;
+};
 
-const AricleComments:React.FC<any> = () => {
-    return <div>AricleComments</div>
-}
-
-export default AricleComments
+export default AricleComments;

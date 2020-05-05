@@ -10,6 +10,9 @@ const ArticleList = loadable(() => import("src/pages/article-list"));
 const ArticleClassify = loadable(() => import("src/pages/article-classify"));
 const ArticleComments = loadable(() => import("src/pages/article-comments"));
 const ArticleDraft = loadable(() => import("src/pages/article-draft"));
+const Tags = loadable(() => import("src/pages/tags"));
+const TagAdd = loadable(() => import("src/pages/tag-add"));
+
 const Home = loadable(() => import("src/pages/home"));
 
 export const routes: Array<IRouteItem> = [
@@ -34,6 +37,10 @@ export const routes: Array<IRouteItem> = [
         component: ArticleAdd,
       },
       {
+        path: "/article-edit/:id",
+        component: ArticleAdd,
+      },
+      {
         path: "/article-classify",
         component: ArticleClassify,
       },
@@ -42,8 +49,16 @@ export const routes: Array<IRouteItem> = [
         component: ArticleDraft,
       },
       {
-        path: "/article-comments",
+        path: "/discuss",
         component: ArticleComments,
+      },
+      {
+        path: "/tags",
+        component: Tags,
+      },
+      {
+        path: "/tag-add",
+        component: TagAdd,
       },
       {
         path: "/",

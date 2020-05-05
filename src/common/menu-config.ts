@@ -54,8 +54,8 @@ const menuConfig: menuType[] = [
       },
       {
         title: "新增标签",
-        key: "tags-add",
-        path: "/tags-add",
+        key: "tag-add",
+        path: "/tag-add",
       },
     ],
   },

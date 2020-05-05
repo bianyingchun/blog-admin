@@ -3,7 +3,6 @@ import { useLocation, useHistory } from "react-router-dom";
 import { Menu } from "antd";
 import { IMenuProps } from "src/types";
 import menuConfig from "src/common/menu-config";
-import * as Icon from "@ant-design/icons";
 import Item from "antd/lib/list/Item";
 const AdminMenu: React.FC<IMenuProps> = ({ collapsed }) => {
   let [openKey, setOpenKey] = useState<string[]>([""]);
@@ -14,13 +13,17 @@ const AdminMenu: React.FC<IMenuProps> = ({ collapsed }) => {
     setOpenKey([key]);
   }, [location.pathname]);
   const handleOpen = (path: string) => {
-    if (path === openKey[0]) {
-      setOpenKey([""]);
+    const openKey2 = [...openKey];
+    const index = openKey2.indexOf(path);
+    if (index === -1) {
+      openKey2.push(path);
+      setOpenKey(openKey2);
     } else {
-      setOpenKey([path]);
+      openKey2.splice(index, 1);
+      setOpenKey(openKey2);
     }
   };
-  const hanleClick = (path?: string) => {
+  const handleClick = (path?: string) => {
     path && history.push(path);
   };
   return (
@@ -54,7 +57,7 @@ const AdminMenu: React.FC<IMenuProps> = ({ collapsed }) => {
                 <Menu.Item
                   key={child.key}
                   onClick={() => {
-                    hanleClick(child.path);
+                    handleClick(child.path);
                   }}
                 >
                   {child.title}

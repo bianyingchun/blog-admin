@@ -2,41 +2,94 @@ import React, { useState, useEffect } from "react";
 import { Button, message, Form, Input, Col, Select } from "antd";
 import "./style.scss";
 import Edit from "./edit";
+import { useLocation, useParams, useHistory } from "react-router-dom";
+import {
+  addArticle,
+  getTags,
+  getArticleById,
+  editArticle,
+} from "src/common/api";
+import { ITagItem } from "src/types";
 const { Option } = Select;
-const ArticleAdd: React.FC<any> = () => {
+const ArticleAdd: React.FC<{}> = () => {
+  const location = useLocation();
+  const history = useHistory();
+  const param = useParams() as { id: string };
+  const [isEditArticle, setIsEditArticle] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const [title, setTitle] = useState<string>("");
-  const [editContent, setEditContent] = useState<string>("");
+  const [tags, setTags] = useState([]);
+  let articleState = 1;
   const [articleContent, setArticleContent] = useState({
     content: "",
     editContent: "",
   });
+  const [initialValues, setInitialValues] = useState({
+    title: "默认值",
+    desc: "",
+    keywords: "",
+    tags: [],
+  });
+  useEffect(() => {
+    (async () => {
+      const res = await getTags({});
+      if (res) {
+        const tags = res.result.list || [];
+        setTags(tags);
+        if (location.pathname.indexOf("edit") !== -1) {
+          const res = await getArticleById(param.id);
+          if (res && res.result) {
+            const {
+              desc,
+              title,
+              tags,
+              content,
+              editContent,
+              keywords,
+              state,
+            } = res.result;
+            let values = {
+              title,
+              desc,
+              keywords,
+              tags: tags.map((item: ITagItem) => item._id),
+            };
+            setInitialValues(values);
+            form.resetFields();
+            articleState = state;
+            setArticleContent({ content, editContent });
+          }
+          setIsEditArticle(true);
+        }
+      }
+    })();
+  }, [location.pathname, param, param.id]);
+
   const handleEditChange = function (content: string, editContent: string) {
     setArticleContent({ content, editContent });
   };
-  const handleSubmit = function () {
-    form
-      .validateFields()
-      .then((res) => {
-        form.submit();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleSubmit = async (state: number) => {
+    await form.validateFields();
+    articleState = state;
+    form.submit();
   };
-  const handleFormFinish = function (values: any) {
-    console.log(values);
+  const handleFormFinish = async (values: any) => {
+    const info = { ...values, ...articleContent, state: articleState };
+
+    if (isEditArticle) {
+      let res = await editArticle(param.id, info);
+      if (res) {
+        alert("修改成功");
+        history.push("/article");
+      }
+    } else {
+      let res = await addArticle(info);
+      if (res) {
+        alert("保存成功");
+        history.push("/article");
+      }
+    }
   };
-  const tags = [
-    { _id: 1, name: "标签" },
-    { _id: 2, name: "css" },
-  ];
-  const initValues = {
-    title: "默认标题",
-    desc: "默认描述",
-    keywords: "java,python",
-    tags: tags.map((item) => item._id),
-  };
+
   const formInputConfigs = [
     {
       name: "title",
@@ -53,12 +106,14 @@ const ArticleAdd: React.FC<any> = () => {
   ];
   return (
     <div>
-      <div className="header-title">{title}</div>
+      <div className="header-title">
+        {isEditArticle ? "编辑文章" : "添加文章"}
+      </div>
       <div className="p20">
         <div className="base-info">
           <Form
             form={form}
-            initialValues={initValues}
+            initialValues={initialValues}
             layout="inline"
             labelCol={{ span: 3 }}
             wrapperCol={{ span: 20 }}
@@ -83,7 +138,7 @@ const ArticleAdd: React.FC<any> = () => {
                 rules={[{ required: true, message: "请选择标签" }]}
               >
                 <Select mode="multiple" placeholder="请选择标签">
-                  {tags.map((item) => (
+                  {tags.map((item: ITagItem) => (
                     <Option value={item._id} key={item._id}>
                       {item.name}
                     </Option>
@@ -93,13 +148,18 @@ const ArticleAdd: React.FC<any> = () => {
             </Col>
           </Form>
         </div>
-        <Edit handleEditChange={handleEditChange} content={editContent} />
+        <Edit
+          handleEditChange={handleEditChange}
+          content={articleContent.editContent}
+        />
         <div className="btnbox">
-          <Button type="primary" onClick={handleSubmit}>
+          <Button type="primary" onClick={() => handleSubmit(1)}>
             提交
           </Button>
           <Button type="dashed">预览</Button>
-          <Button type="dashed">存草稿</Button>
+          <Button type="dashed" onClick={() => handleSubmit(2)}>
+            存草稿
+          </Button>
         </div>
       </div>
     </div>
