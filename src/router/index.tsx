@@ -15,7 +15,13 @@ const TagAdd = loadable(() => import("src/pages/tag-add"));
 
 const Home = loadable(() => import("src/pages/home"));
 
+// 测试页面
+const Test = loadable(() => import("src/pages/test"));
 export const routes: Array<IRouteItem> = [
+  {
+    path: "/test",
+    component: Test,
+  },
   {
     path: "/login",
     component: Login,

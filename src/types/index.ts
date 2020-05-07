@@ -99,23 +99,42 @@ export interface IVisitor {
   gravatar: String;
   name: String;
   email: String;
-  site: String;
+  site?: String;
 }
 
-export interface ICommentProps {
+export interface ICommentItem {
   _id: String;
   post_id: String;
-  pid: Number;
+  pid?: Number;
   content: String;
   likes: Number;
-  ip: String;
-  city: String;
-  range: String;
-  country: String;
-  agent: String;
   author: IVisitor;
+  reply: Number;
+  state: Number;
+  create_at: Date;
+  update_at: Date;
+  ip?: string;
+  city?: string;
+  range?: string;
+  country?: string;
+  agent?: string;
+}
+
+export interface IReplyItem{
+  _id: string,
+  post_id: string,
+  cid: string,
+  from: IVisitor,
+  to?: IVisitor,
+  content: string,
+  likes: Number;
   state: Number;
   reply: Number;
   create_at: Date;
   update_at: Date;
+  ip?: string;
+  city?: string;
+  range?: string;
+  country?: string;
+  agent?: string;
 }

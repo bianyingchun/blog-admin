@@ -31,17 +31,40 @@ export interface ITagPageParams {
   keyword?: string;
 }
 
-export interface ICommentEditParmas {
-  post_id: String;
-  pid?: Number;
-  content: String;
-  likes?: Number;
-  ip?: String;
-  city?: String;
-  range?: String;
-  country?: String;
-  agent?: String;
+export interface ICommentAddParmas {
+  post_id: string;
   author: IVisitor;
-  state?: Number;
-  reply?: Number;
+  content: string;
+}
+
+export interface IReplyAddParams {
+  post_id: string;
+  cid: string;
+  content: string;
+  from: IVisitor;
+  to?: IVisitor;
+}
+export interface ICommentPageParams {
+  post_id?: string;
+  current_page?: number;
+  page_size?: number;
+  keyword?: string;
+  state?: 0 | 1 | 2;
+  sort?: -1 | 1 | 2;
+}
+export interface IReplyPageParmas {
+  cid: string;
+  current_page?: number;
+  page_size?: number;
+  keyword?: string;
+  state?: 0 | 1 | 2;
+  sort?: -1 | 1 | 2;
+}
+// TODO 修改属性
+export interface ICommentEditParams {
+  [prop: string]: any;
+}
+
+export interface IReplyEditParams {
+  [prop: string]: any;
 }
