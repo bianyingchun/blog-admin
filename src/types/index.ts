@@ -74,7 +74,7 @@ export interface IArticleItem {
   Content: string;
   create_at: Date;
   update_at: Date;
-  thumb?: String;
+  thumb?: string;
   meta: IArticleMeta;
 }
 export interface IEditableCellProps {
@@ -96,21 +96,44 @@ export interface IArticleTableProps {
 }
 
 export interface IVisitor {
-  gravatar: String;
-  name: String;
-  email: String;
-  site?: String;
+  gravatar: string;
+  name: string;
+  email: string;
+  site?: string;
 }
 
 export interface ICommentItem {
-  _id: String;
-  post_id: String;
-  pid?: Number;
-  content: String;
-  likes: Number;
+  _id: string;
+  post_id: string;
+  pid?: number;
+  content: string;
+  likes: number;
   author: IVisitor;
-  reply: Number;
-  state: Number;
+  reply: number;
+  state: number;
+  create_at: Date;
+  update_at: Date;
+  ip?: string;
+  city?: string;
+  range?: string;
+  country?: string;
+  agent?: string;
+}
+export interface ICommentItemProps extends ICommentItem {
+  remove: (id: string) => void;
+  like: (id: string) => void;
+}
+
+export interface IReplyItem {
+  _id: string;
+  post_id: string;
+  cid: string;
+  from: IVisitor;
+  to?: IVisitor;
+  content: string;
+  likes: number;
+  state: number;
+  reply: number;
   create_at: Date;
   update_at: Date;
   ip?: string;
@@ -120,21 +143,8 @@ export interface ICommentItem {
   agent?: string;
 }
 
-export interface IReplyItem{
-  _id: string,
-  post_id: string,
-  cid: string,
-  from: IVisitor,
-  to?: IVisitor,
-  content: string,
-  likes: Number;
-  state: Number;
-  reply: Number;
-  create_at: Date;
-  update_at: Date;
-  ip?: string;
-  city?: string;
-  range?: string;
-  country?: string;
-  agent?: string;
+export interface IReplyItemProps extends IReplyItem {
+  remove: (id: string) => void;
+  like: (id: string) => void;
+  addReply: (id: string, reply: any) => void;
 }
