@@ -142,9 +142,15 @@ export interface IReplyItem {
   country?: string;
   agent?: string;
 }
-
+export interface IReplyAddParams {
+  post_id: string;
+  cid: string;
+  content: string;
+  from: IVisitor;
+  to?: IVisitor;
+}
 export interface IReplyItemProps extends IReplyItem {
-  remove: (id: string) => void;
-  like: (id: string) => void;
-  addReply: (id: string, reply: any) => void;
+  // remove: (id: string) => void;
+  // like: (id: string) => void;
+  addReply: (reply:IReplyAddParams) => void;
 }

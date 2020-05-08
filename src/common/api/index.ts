@@ -62,9 +62,9 @@ export const getComments = (params: ICommentPageParams) =>
   request("/comment/get", "get", params);
 
 // 评论添加回复
-export const addReply = (params: IReplyAddParams) => {
+export const addReply = (params: IReplyAddParams) => 
   request("/reply/add", "post", params);
-};
+
 // 删除回复
 export const deleteReply = (id: string) =>
   request("/reply/delete", "post", { id });

@@ -8,6 +8,7 @@ import {
   ICommentItemProps,
   IReplyItem,
   IReplyItemProps,
+  IReplyAddParams,
 } from "src/types";
 const ReplyItem: React.FC<IReplyItemProps> = ({
   _id,
@@ -18,14 +19,72 @@ const ReplyItem: React.FC<IReplyItemProps> = ({
   to,
   reply,
   state,
-  create_at,
-  update_at,
+  cid,
+  // create_at,
+  // update_at,
   city,
   country,
-  like,
-  remove,
+  // like,
+  // remove,
+  addReply,
 }) => {
-  return <div></div>;
+  const id = Math.ceil(Math.random() * 100);
+  const user = {
+    gravatar: "avatar",
+    name: "MarkTuan__" + id,
+    email: "20932109@qq.com",
+  };
+  const [val, setVal] = useState("");
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVal(e.target.value);
+  };
+  return (
+    <div>
+      <div className="reply_item">
+        <div>
+          {from.name}
+          {to ? `@${to.name}:${content}` : content}{" "}
+        </div>
+        <div>
+          <Button
+            type="ghost"
+            onClick={() => {
+              // like(_id);
+            }}
+          >
+            点赞
+          </Button>
+          <span> 赞数:{likes} </span>
+          <Button
+            type="danger"
+            onClick={() => {
+              // remove(_id);
+            }}
+          >
+            删除
+          </Button>
+        </div>
+      </div>
+      <div>
+        <div className="input_wraper">
+          <input type="text" onChange={handleInputChange} value={val} />
+          <Button
+            onClick={() => {
+              addReply({
+                post_id,
+                cid,
+                content: val,
+                from: user,
+                to: from,
+              });
+            }}
+          >
+            添加回复
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 };
 const CommentItem: React.FC<ICommentItemProps> = ({
   _id,
@@ -50,9 +109,12 @@ const CommentItem: React.FC<ICommentItemProps> = ({
     email: "20932109@qq.com",
   };
   const [val, setVal] = useState("");
-  const [replyList, setReplyList] = useState([]);
-  const addReply = async () => {
-    service.addReply({ post_id, cid: _id, content: val, from: user });
+  const [replyList, setReplyList] = useState<Array<IReplyItem>>([]);
+  const addReply = async (reply: IReplyAddParams) => {
+    const res = await service.addReply(reply);
+    if (res) {
+      setReplyList([...replyList, res.result]);
+    }
   };
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVal(e.target.value);
@@ -100,13 +162,19 @@ const CommentItem: React.FC<ICommentItemProps> = ({
       </div>
       <div>
         <div className="input_wraper">
-          <input type="text" onChange={handleInputChange} value={content} />
-          <Button onClick={() => addReply()}>添加回复</Button>
+          <input type="text" onChange={handleInputChange} value={val} />
+          <Button
+            onClick={() => {
+              addReply({ post_id, cid: _id, content: val, from: user });
+            }}
+          >
+            添加回复
+          </Button>
         </div>
         <div className="title">{reply}条回复</div>
         <div className="reply_list">
           {replyList.map((item) => (
-            <ReplyItem />
+            <ReplyItem {...{ ...item, addReply }} key={item._id} />
           ))}
         </div>
       </div>
