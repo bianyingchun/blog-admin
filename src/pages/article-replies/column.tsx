@@ -1,4 +1,4 @@
-import { ICommentItem, IVisitor } from "src/types";
+import { IReplyItem, IVisitor } from "src/types";
 import React from "react";
 import moment from "moment";
 import { Form, Select } from "antd";
@@ -7,23 +7,18 @@ export default [
   {
     title: "#",
     key: "tIndex",
-    render: (_: any, record: ICommentItem, index: number) => (
+    render: (_: any, record: IReplyItem, index: number) => (
       <span>{index + 1}</span>
     ),
   },
   {
-    title: "评论文章",
-    key: "post_title",
-    dataIndex: "post_title",
-  },
-  {
-    title: "评论内容",
+    title: "回复内容",
     key: "content",
     dataIndex: "content",
     editable: true,
   },
   {
-    title: "评论日期",
+    title: "回复日期",
     dataIndex: "create_at",
     key: "create_at",
     render: (t: Date) => <span>{moment(t).format("YYYY-MM-DD HH:mm:ss")}</span>,
@@ -34,10 +29,26 @@ export default [
     key: "ip",
   },
   {
-    title: "评论者信息",
-    dataIndex: "author",
-    key: "author",
-    render: (author: IVisitor) => {
+    title: "from",
+    dataIndex: "from",
+    key: "from",
+    render: (author: IVisitor | undefined) => {
+      if (!author) return <span></span>;
+      return (
+        <span>
+          <div>名称：{author.name}</div>
+          <div>邮箱：{author.email}</div>
+          <div>网站：{author.name}</div>
+        </span>
+      );
+    },
+  },
+  {
+    title: "to",
+    dataIndex: "to",
+    key: "to",
+    render: (author: IVisitor | undefined) => {
+      if (!author) return <span></span>;
       return (
         <span>
           <div>名称：{author.name}</div>
@@ -51,11 +62,6 @@ export default [
     title: "点赞数",
     dataIndex: "likes",
     key: "likes",
-  },
-  {
-    title: "回复数",
-    dataIndex: "reply",
-    key: "reply",
   },
   {
     title: "状态",

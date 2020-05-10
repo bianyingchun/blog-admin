@@ -83,8 +83,13 @@ const menuConfig: menuType[] = [
     children: [
       {
         title: "文章评论",
-        key: "discuss-article",
-        path: "/discuss",
+        key: "discuss-comment",
+        path: "/discuss-comment",
+      },
+      {
+        title: "评论回复",
+        key: "discuss-reply",
+        path: "/discuss-reply",
       },
     ],
   },

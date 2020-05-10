@@ -83,6 +83,7 @@ export interface IEditableCellProps {
   title: string;
   record: ITagItem;
   index: number;
+  editRender?: (_: any) => any;
   children: React.ReactNode;
 }
 export interface IHandler {
@@ -106,6 +107,7 @@ export interface ICommentItem {
   _id: string;
   post_id: string;
   pid?: number;
+  post_title?: string;
   content: string;
   likes: number;
   author: IVisitor;
@@ -152,5 +154,24 @@ export interface IReplyAddParams {
 export interface IReplyItemProps extends IReplyItem {
   // remove: (id: string) => void;
   // like: (id: string) => void;
-  addReply: (reply:IReplyAddParams) => void;
+  addReply: (reply: IReplyAddParams) => void;
+}
+
+export interface IColumn {
+  title: string;
+  key: string;
+  dataIndex?: string;
+  editable?: boolean;
+  render?: (_: any, record: any, index: number) => JSX.Element;
+  editRender?: (_: any) => JSX.Element;
+}
+export interface IPageInfo {
+  current_page: number;
+  page_size: number;
+}
+export interface IEditableTableProps {
+  columns: Array<IColumn>;
+  fetchData: (pageInfo: IPageInfo) => Promise<any>;
+  editData: (id: string, info: any) => Promise<any>;
+  deleteData: (id: string) => Promise<any>;
 }

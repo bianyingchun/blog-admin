@@ -52,27 +52,27 @@ export const addComment = (params: ICommentAddParmas) =>
 export const deleteComment = (id: string) =>
   request("/comment/delete", "post", { id });
 // 编辑评论
-export const editComment = (id: String, info: ICommentEditParams) =>
+export const editComment = (id: string, info: ICommentEditParams) =>
   request("/comment/edit", "post", { id, info });
 //喜欢评论
-export const likeComment = (id: String) =>
+export const likeComment = (id: string) =>
   request("/comment/like", "post", { id });
 //分页获取评论列表,参数有post_id :单篇文章评论list, 无post_id:全量评论列表
 export const getComments = (params: ICommentPageParams) =>
   request("/comment/get", "get", params);
 
 // 评论添加回复
-export const addReply = (params: IReplyAddParams) => 
+export const addReply = (params: IReplyAddParams) =>
   request("/reply/add", "post", params);
 
 // 删除回复
 export const deleteReply = (id: string) =>
   request("/reply/delete", "post", { id });
 // 编辑回复
-export const editReply = (id: String, info: IReplyEditParams) =>
+export const editReply = (id: string, info: IReplyEditParams) =>
   request("/reply/edit", "post", { id, info });
 //喜欢回复
-export const likeReply = (id: String) => request("/reply/like", "post", { id });
+export const likeReply = (id: string) => request("/reply/like", "post", { id });
 //分页获取评论cid回复列表
 export const getReplys = (params: IReplyPageParmas) =>
   request("/reply/get", "get", params);

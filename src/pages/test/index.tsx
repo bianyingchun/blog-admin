@@ -183,7 +183,7 @@ const CommentItem: React.FC<ICommentItemProps> = ({
 };
 // =============================================
 const Test: React.FC<any> = () => {
-  const post_id = "5eb35690e4c1082ccc76fdf2";
+  const post_id = "5eae8bad3bdbe97c3c43d9bd";
   const [content, setContent] = useState("");
   const [commentList, setCommentList] = useState<ICommentItem[]>([]);
   const id = Math.ceil(Math.random() * 100);
@@ -203,7 +203,6 @@ const Test: React.FC<any> = () => {
     if (res) {
       const newData: ICommentItem[] = [...commentList];
       const index = commentList.findIndex((item) => item._id === id);
-      console.log(index);
       const item = newData[index];
       newData.splice(index, 1, { ...item, likes: item.likes + 1 });
       setCommentList(newData);

@@ -53,7 +53,7 @@ export interface ICommentPageParams {
   sort?: -1 | 1 | 2;
 }
 export interface IReplyPageParmas {
-  cid: string;
+  cid?: string;
   current_page?: number;
   page_size?: number;
   keyword?: string;
@@ -62,9 +62,8 @@ export interface IReplyPageParmas {
 }
 // TODO 修改属性
 export interface ICommentEditParams {
-  [prop: string]: any;
+  content: string;
+  state: number;
 }
 
-export interface IReplyEditParams {
-  [prop: string]: any;
-}
+export interface IReplyEditParams extends ICommentEditParams {}

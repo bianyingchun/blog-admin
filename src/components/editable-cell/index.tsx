@@ -7,22 +7,24 @@ const editableCell: React.FC<IEditableCellProps> = ({
   title,
   record,
   index,
+  editRender,
   children,
 }) => {
-  return (
-    <td>
-      {editing ? (
+  const editTd = () => {
+    if (editRender) {
+      return editRender(record[dataIndex]);
+    } else {
+      return (
         <Form.Item
           name={dataIndex}
           rules={[{ required: true, message: `请输入${title}` }]}
         >
           <Input placeholder={`请输入${title}`} />
         </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
+      );
+    }
+  };
+  return <td>{editing ? editTd() : children}</td>;
 };
 
 export default editableCell;
