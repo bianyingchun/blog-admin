@@ -76,3 +76,6 @@ export const likeReply = (id: string) => request("/reply/like", "post", { id });
 //分页获取评论cid回复列表
 export const getReplys = (params: IReplyPageParmas) =>
   request("/reply/get", "get", params);
+
+
+export const uploadMusicPoster = (data:any) => request('/music/upload','post',data)

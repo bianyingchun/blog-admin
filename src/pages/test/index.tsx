@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as service from "src/common/api";
 import { Button } from "antd";
 import moment from "moment";
@@ -223,8 +223,25 @@ const Test: React.FC<any> = () => {
       setCommentList(res.result.list || []);
     })();
   }, []);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const uploadFile = async () => {
+    if (fileRef && fileRef.current && fileRef.current.files) {
+      let file = fileRef.current.files[0]
+      let formData = new FormData()
+      formData.set('file',file)
+      formData.set('name', file.name)
+      const res = await service.uploadMusicPoster(formData)
+      console.log(res)
+    }
+    
+      
+  }
   return (
     <div>
+      <div className="test_upload">
+        <div>头像：<input type="file" ref={fileRef} /></div>
+        <button onClick={() => { uploadFile() }}>上传</button>
+      </div>
       <div className="input_wraper">
         <input type="text" onChange={handleInputChange} value={content} />
         <Button onClick={() => addComment()}>添加评论</Button>
