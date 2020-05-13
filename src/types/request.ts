@@ -1,7 +1,9 @@
 import { IVisitor } from "./index";
-export interface IArticlePageParams {
+export interface IPage {
   current_page?: number;
   page_size?: number;
+}
+export interface IArticlePageParams extends IPage {
   keyword?: string;
   state?: 1 | 2;
   publish?: 1 | 2;
@@ -9,7 +11,6 @@ export interface IArticlePageParams {
   hot?: boolean;
   date?: Date;
 }
-
 export interface IArticleEditParmas {
   title: string;
   tags: string[];
@@ -25,9 +26,7 @@ export interface ITagEditParams {
   desc?: string;
 }
 
-export interface ITagPageParams {
-  current_page?: number;
-  page_size?: number;
+export interface ITagPageParams extends IPage {
   keyword?: string;
 }
 
@@ -44,26 +43,37 @@ export interface IReplyAddParams {
   from: IVisitor;
   to?: IVisitor;
 }
-export interface ICommentPageParams {
+export interface ICommentPageParams extends IPage {
   post_id?: string;
-  current_page?: number;
-  page_size?: number;
   keyword?: string;
   state?: 0 | 1 | 2;
   sort?: -1 | 1 | 2;
 }
-export interface IReplyPageParmas {
+export interface IReplyPageParmas extends IPage {
   cid?: string;
-  current_page?: number;
-  page_size?: number;
   keyword?: string;
   state?: 0 | 1 | 2;
   sort?: -1 | 1 | 2;
 }
-// TODO 修改属性
+
 export interface ICommentEditParams {
   content: string;
   state: number;
 }
 
 export interface IReplyEditParams extends ICommentEditParams {}
+
+export interface IMusicAddParams {
+  title: string;
+  name: string;
+  url: string;
+  singer: string;
+  lyrics: string;
+}
+
+export type IMuiscEditParams = Partial<IMusicAddParams>;
+
+export interface IMuiscParams extends IPage {
+  state?: number;
+  id?: string;
+}

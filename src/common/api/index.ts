@@ -10,6 +10,8 @@ import {
   IReplyEditParams,
   ICommentPageParams,
   IReplyPageParmas,
+  IMusicAddParams,
+  IMuiscEditParams
 } from "src/types/request";
 
 // 分页文章列表
@@ -77,5 +79,13 @@ export const likeReply = (id: string) => request("/reply/like", "post", { id });
 export const getReplys = (params: IReplyPageParmas) =>
   request("/reply/get", "get", params);
 
+// 上传音乐封面
+export const uploadMusicPoster = (data: any) => request('/music/upload', 'post', data)
 
-export const uploadMusicPoster = (data:any) => request('/music/upload','post',data)
+export const addMusic = (params: IMusicAddParams) => request('/music/add', 'post', params)
+
+export const editMusic = (id: string, info: IMuiscEditParams) => request('/music/edit', 'post', { id, info })
+
+export const deleteMusic = (id: string) => request('/muisc/delete', 'post', { id })
+
+export const getMusic = (params:)
