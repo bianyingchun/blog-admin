@@ -9,7 +9,7 @@ import {
   getArticleById,
   editArticle,
 } from "src/common/api";
-import { ITagItem } from "src/types";
+import InputUpload from "src/components/input-upload";
 const { TextArea } = Input;
 
 const ArticleAdd: React.FC<{}> = () => {
@@ -18,7 +18,8 @@ const ArticleAdd: React.FC<{}> = () => {
   const param = useParams() as { id: string };
   const [isEditArticle, setIsEditArticle] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const [tags, setTags] = useState([]);
+  const [inputVal, setInputVal] = useState("");
+  const [fileList, setFileList] = useState<any>([]);
   let articleState = 1;
   const [articleContent, setArticleContent] = useState({
     content: "",
@@ -30,46 +31,54 @@ const ArticleAdd: React.FC<{}> = () => {
     keywords: "",
     tags: [],
   });
-  useEffect(() => {
-    (async () => {
-      const res = await getTags({});
-      if (res) {
-        const tags = res.result.list || [];
-        setTags(tags);
-        if (location.pathname.indexOf("edit") !== -1) {
-          const res = await getArticleById(param.id);
-          if (res && res.result) {
-            const {
-              desc,
-              title,
-              tags,
-              content,
-              editContent,
-              keywords,
-              state,
-            } = res.result;
-            let values = {
-              title,
-              desc,
-              keywords,
-              tags: tags.map((item: ITagItem) => item._id),
-            };
-            setInitialValues(values);
-            form.resetFields();
-            articleState = state;
-            setArticleContent({ content, editContent });
-          }
-          setIsEditArticle(true);
-        }
-      }
-    })();
-  }, [location.pathname, param, param.id]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const res = await getTags({});
+  //     if (res) {
+  //       const tags = res.result.list || [];
+  //       setTags(tags);
+  //       if (location.pathname.indexOf("edit") !== -1) {
+  //         const res = await getArticleById(param.id);
+  //         if (res && res.result) {
+  //           const {
+  //             desc,
+  //             title,
+  //             tags,
+  //             content,
+  //             editContent,
+  //             keywords,
+  //             state,
+  //           } = res.result;
+  //           let values = {
+  //             title,
+  //             desc,
+  //             keywords,
+  //             tags: tags.map((item: ITagItem) => item._id),
+  //           };
+  //           setInitialValues(values);
+  //           form.resetFields();
+  //           articleState = state;
+  //           setArticleContent({ content, editContent });
+  //         }
+  //         setIsEditArticle(true);
+  //       }
+  //     }
+  //   })();
+  // }, [location.pathname, param, param.id]);
+  const checkPoster = () => {
+    if (inputVal || fileList.length) {
+      return Promise.resolve();
+    }
+    return Promise.reject("Price must be greater than zero!");
+  };
   const handleSubmit = async (state: number) => {
     await form.validateFields();
     articleState = state;
     form.submit();
   };
   const handleFormFinish = async (values: any) => {
+    console.log(values);
     const info = { ...values, ...articleContent, state: articleState };
 
     if (isEditArticle) {
@@ -122,18 +131,21 @@ const ArticleAdd: React.FC<{}> = () => {
               <TextArea placeholder="请填写歌词" />
             </Form.Item>
             <Form.Item
-              name="poster"
               label="海报"
-              rules={[{ required: true, message: `请填写海报` }]}
+              name="poster"
+              rules={[{ validator: checkPoster }]}
             >
-              <Input placeholder="请填写海报链接" />
-              <Upload>
-                <Button type="link">
-                  <UploadOutlined /> 点击上传海报{" "}
-                </Button>
-              </Upload>
+              <InputUpload
+                {...{
+                  inputVal,
+                  setInputVal,
+                  setFileList,
+                  fileList,
+                  accept: ".jpg, .jpeg, .png",
+                }}
+              />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               name="url"
               label="歌曲链接"
               rules={[{ required: true, message: `请填写海报` }]}
@@ -141,10 +153,10 @@ const ArticleAdd: React.FC<{}> = () => {
               <Input placeholder="请填写歌曲链接" />
               <Upload>
                 <Button type="link">
-                  <UploadOutlined /> 点击上传歌曲{" "}
+                  <UploadOutlined /> 点击上传歌曲
                 </Button>
               </Upload>
-            </Form.Item>
+            </Form.Item> */}
           </Form>
         </div>
         <div className="btnbox">

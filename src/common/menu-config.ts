@@ -101,7 +101,7 @@ const menuConfig: menuType[] = [
       {
         title: "全部项目",
         key: "project-all",
-        path: "/project",
+        path: "/projects",
       },
       {
         title: "新增项目",
@@ -118,7 +118,7 @@ const menuConfig: menuType[] = [
       {
         title: "音乐列表",
         key: "music-list",
-        path: "/music",
+        path: "/musics",
       },
       {
         title: "新增音乐",

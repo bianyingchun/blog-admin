@@ -14,7 +14,8 @@ const ArticleDraft = loadable(() => import("src/pages/article-draft"));
 const Tags = loadable(() => import("src/pages/tags"));
 const TagAdd = loadable(() => import("src/pages/tag-add"));
 const Home = loadable(() => import("src/pages/home"));
-
+const MusicList = loadable(() => import("src/pages/music-list"));
+const MusicAdd = loadable(() => import("src/pages/music-add"));
 // 测试页面
 const Test = loadable(() => import("src/pages/test"));
 export const routes: Array<IRouteItem> = [
@@ -70,6 +71,8 @@ export const routes: Array<IRouteItem> = [
         path: "/tag-add",
         component: TagAdd,
       },
+      { path: "/musics", component: MusicList },
+      { path: "/music-add", component: MusicAdd },
       {
         path: "/",
         component: Home,
