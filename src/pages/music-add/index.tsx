@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Button, message, Form, Input, Col, Select } from "antd";
+import { Button, message, Form, Input, Upload } from "antd";
 import "./style.scss";
-import Edit from "./edit";
+import { UploadOutlined } from "@ant-design/icons";
 import { useLocation, useParams, useHistory } from "react-router-dom";
 import {
   addArticle,
@@ -10,7 +10,8 @@ import {
   editArticle,
 } from "src/common/api";
 import { ITagItem } from "src/types";
-const { Option } = Select;
+const { TextArea } = Input;
+
 const ArticleAdd: React.FC<{}> = () => {
   const location = useLocation();
   const history = useHistory();
@@ -63,10 +64,6 @@ const ArticleAdd: React.FC<{}> = () => {
       }
     })();
   }, [location.pathname, param, param.id]);
-
-  const handleEditChange = function (content: string, editContent: string) {
-    setArticleContent({ content, editContent });
-  };
   const handleSubmit = async (state: number) => {
     await form.validateFields();
     articleState = state;
@@ -90,68 +87,66 @@ const ArticleAdd: React.FC<{}> = () => {
     }
   };
 
-  const formInputConfigs = [
-    {
-      name: "title",
-      label: "标题",
-    },
-    {
-      name: "desc",
-      label: "描述",
-    },
-    {
-      name: "keywords",
-      label: "关键字",
-    },
-  ];
   return (
     <div>
-      <div className="header-title">
-        新增音乐
-      </div>
+      <div className="header-title">新增音乐</div>
       <div className="p20">
         <div className="base-info">
           <Form
             form={form}
             initialValues={initialValues}
-            layout="inline"
-            labelCol={{ span: 3 }}
-            wrapperCol={{ span: 20 }}
+            layout="horizontal"
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
             onFinish={handleFormFinish}
           >
-            {formInputConfigs.map((item, index) => {
-              return (
-                <Col span={12} key={index}>
-                  <Form.Item
-                    {...item}
-                    rules={[{ required: true, message: `请输入${item.label}` }]}
-                  >
-                    <Input placeholder={"请输入" + item.label} />
-                  </Form.Item>
-                </Col>
-              );
-            })}
-            <Col span={12}>
-              <Form.Item
-                label="标签"
-                name="tags"
-                rules={[{ required: true, message: "请选择标签" }]}
-              >
-                <Select mode="multiple" placeholder="请选择标签">
-                  {tags.map((item: ITagItem) => (
-                    <Option value={item._id} key={item._id}>
-                      {item.name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
+            <Form.Item
+              name="title"
+              label="歌名"
+              rules={[{ required: true, message: `请输入歌名` }]}
+            >
+              <Input placeholder="请输入歌名" />
+            </Form.Item>
+            <Form.Item
+              name="singer"
+              label="歌手"
+              rules={[{ required: true, message: `请填写歌手` }]}
+            >
+              <Input placeholder="请填写歌手" />
+            </Form.Item>
+            <Form.Item
+              name="lyrics"
+              label="歌词"
+              rules={[{ required: true, message: `请输入歌词` }]}
+            >
+              <TextArea placeholder="请填写歌词" />
+            </Form.Item>
+            <Form.Item
+              name="poster"
+              label="海报"
+              rules={[{ required: true, message: `请填写海报` }]}
+            >
+              <Input placeholder="请填写海报链接" />
+              <Upload>
+                <Button type="link">
+                  <UploadOutlined /> 点击上传海报{" "}
+                </Button>
+              </Upload>
+            </Form.Item>
+            <Form.Item
+              name="url"
+              label="歌曲链接"
+              rules={[{ required: true, message: `请填写海报` }]}
+            >
+              <Input placeholder="请填写歌曲链接" />
+              <Upload>
+                <Button type="link">
+                  <UploadOutlined /> 点击上传歌曲{" "}
+                </Button>
+              </Upload>
+            </Form.Item>
           </Form>
         </div>
-        <Edit
-          handleEditChange={handleEditChange}
-          content={articleContent.editContent}
-        />
         <div className="btnbox">
           <Button type="primary" onClick={() => handleSubmit(1)}>
             提交
@@ -167,3 +162,5 @@ const ArticleAdd: React.FC<{}> = () => {
 };
 
 export default ArticleAdd;
+// https://www.jianshu.com/p/36d3574aeb78 文件上传
+// 自定义表单控件
