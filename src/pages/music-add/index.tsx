@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Button, message, Form, Input, Upload } from "antd";
+import { Button, Form, Input} from "antd";
 import "./style.scss";
-import { UploadOutlined } from "@ant-design/icons";
 import { useLocation, useParams, useHistory } from "react-router-dom";
 import {
   addArticle,
@@ -10,6 +9,7 @@ import {
   editArticle,
 } from "src/common/api";
 import InputUpload from "src/components/input-upload";
+import { IInputUploadValue } from "src/types";
 const { TextArea } = Input;
 
 const ArticleAdd: React.FC<{}> = () => {
@@ -18,18 +18,18 @@ const ArticleAdd: React.FC<{}> = () => {
   const param = useParams() as { id: string };
   const [isEditArticle, setIsEditArticle] = useState<boolean>(false);
   const [form] = Form.useForm();
-  const [inputVal, setInputVal] = useState("");
-  const [fileList, setFileList] = useState<any>([]);
+
   let articleState = 1;
   const [articleContent, setArticleContent] = useState({
     content: "",
     editContent: "",
   });
   const [initialValues, setInitialValues] = useState({
-    title: "默认值",
-    desc: "",
-    keywords: "",
-    tags: [],
+    title: "歌名",
+    singer: "歌手",
+    lyrics: "歌词",
+    poster: { text: "", fileList: [] },
+    url: { text: "", fileList: [] },
   });
 
   // useEffect(() => {
@@ -66,11 +66,12 @@ const ArticleAdd: React.FC<{}> = () => {
   //     }
   //   })();
   // }, [location.pathname, param, param.id]);
-  const checkPoster = () => {
-    if (inputVal || fileList.length) {
+  const checkFileOrText = (rule: any, value: IInputUploadValue) => {
+    console.log(rule, value);
+    if (value.text || (value.fileList && value.fileList.length)) {
       return Promise.resolve();
     }
-    return Promise.reject("Price must be greater than zero!");
+    return Promise.reject("请填写链接或上传文件");
   };
   const handleSubmit = async (state: number) => {
     await form.validateFields();
@@ -133,39 +134,22 @@ const ArticleAdd: React.FC<{}> = () => {
             <Form.Item
               label="海报"
               name="poster"
-              rules={[{ validator: checkPoster }]}
+              rules={[{ validator: checkFileOrText }]}
             >
-              <InputUpload
-                {...{
-                  inputVal,
-                  setInputVal,
-                  setFileList,
-                  fileList,
-                  accept: ".jpg, .jpeg, .png",
-                }}
-              />
+              <InputUpload accept=".jpg, .jpeg, .png" />
             </Form.Item>
-            {/* <Form.Item
+            <Form.Item
               name="url"
               label="歌曲链接"
-              rules={[{ required: true, message: `请填写海报` }]}
+              rules={[{ validator: checkFileOrText }]}
             >
-              <Input placeholder="请填写歌曲链接" />
-              <Upload>
-                <Button type="link">
-                  <UploadOutlined /> 点击上传歌曲
-                </Button>
-              </Upload>
-            </Form.Item> */}
+              <InputUpload accept=".flac, .ape, .mp3" />
+            </Form.Item>
           </Form>
         </div>
         <div className="btnbox">
           <Button type="primary" onClick={() => handleSubmit(1)}>
             提交
-          </Button>
-          <Button type="dashed">预览</Button>
-          <Button type="dashed" onClick={() => handleSubmit(2)}>
-            存草稿
           </Button>
         </div>
       </div>
@@ -174,5 +158,6 @@ const ArticleAdd: React.FC<{}> = () => {
 };
 
 export default ArticleAdd;
+
 // https://www.jianshu.com/p/36d3574aeb78 文件上传
 // 自定义表单控件

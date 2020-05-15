@@ -1,16 +1,23 @@
 import React, { useState } from "react";
 import { Upload, Input, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { IInputUploadProps } from "src/types";
+import { IInputUploadProps, IInputUploadValue } from "src/types";
 const InputUpload: React.FC<IInputUploadProps> = ({
-  inputVal,
-  setInputVal,
-  fileList,
-  setFileList,
+  value = {},
+  onChange,
   accept,
 }) => {
+  const [text, setText] = useState(value.text || '');
+  const [fileList, setFileList] = useState<any>([]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputVal(e.target.value);
+    const newText = e.target.value;
+    setText(newText)
+    triggerChange({ text: newText});
+  };
+  const triggerChange = (changedValue: IInputUploadValue) => {
+    if (onChange) {
+      onChange({ text, fileList, ...value, ...changedValue });
+    }
   };
   const handleUploadChange = (info: any) => {
     let fileList = [...info.fileList];
@@ -26,7 +33,7 @@ const InputUpload: React.FC<IInputUploadProps> = ({
   };
   const beforeUploadHandle = (file: any) => {
     setFileList([file]);
-    console.log(file);
+    triggerChange({fileList:[file]})
     return false;
   };
   const uploadProps = {
@@ -39,13 +46,13 @@ const InputUpload: React.FC<IInputUploadProps> = ({
   return (
     <>
       <Input
-        placeholder="请填写海报链接"
-        value={inputVal}
+        placeholder="请填写链接"
+        value={text}
         onChange={handleInputChange}
       />
       <Upload {...uploadProps} fileList={fileList}>
         <Button type="link">
-          <UploadOutlined /> 点击上传海报
+          <UploadOutlined /> 点击上传文件
         </Button>
       </Upload>
     </>
