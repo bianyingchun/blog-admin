@@ -175,13 +175,21 @@ export interface IEditableTableProps {
   editData: (id: string, info: any) => Promise<any>;
   deleteData: (id: string) => Promise<any>;
 }
-export interface IInputUploadValue{
-  text?: string,
-  fileList?: any[],
+export interface IInputUploadValue {
+  text?: string;
+  fileList?: File[];
 }
 
 export interface IInputUploadProps {
   value?: IInputUploadValue;
   onChange?: (value: IInputUploadValue) => void;
   accept: string;
+}
+
+export interface IETableProps {
+  columns: Array<IColumn>;
+  fetchData: (pageInfo: IPageInfo) => Promise<any>;
+  editData: (id: string) => Promise<any>;
+  viewData: (id: string) => Promise<any>;
+  deleteData: (id: string) => Promise<any>;
 }

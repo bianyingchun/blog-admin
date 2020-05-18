@@ -226,21 +226,25 @@ const Test: React.FC<any> = () => {
   const fileRef = useRef<HTMLInputElement>(null);
   const uploadFile = async () => {
     if (fileRef && fileRef.current && fileRef.current.files) {
-      let file = fileRef.current.files[0]
-      let formData = new FormData()
-      formData.set('file',file)
-      formData.set('name', file.name)
-      const res = await service.uploadMusicPoster(formData)
-      console.log(res)
+      let file = fileRef.current.files[0];
+      const res = await service.uploadMusicPoster(file);
+      console.log(res);
     }
-    
-      
-  }
+  };
   return (
     <div>
       <div className="test_upload">
-        <div>头像：<input type="file" ref={fileRef} /></div>
-        <button onClick={() => { uploadFile() }}>上传</button>
+        <div>
+          头像：
+          <input type="file" ref={fileRef} />
+        </div>
+        <button
+          onClick={() => {
+            uploadFile();
+          }}
+        >
+          上传
+        </button>
       </div>
       <div className="input_wraper">
         <input type="text" onChange={handleInputChange} value={content} />

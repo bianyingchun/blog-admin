@@ -1,4 +1,4 @@
-import { IVisitor } from "./index";
+import { IVisitor, IInputUploadValue } from "./index";
 export interface IPage {
   current_page?: number;
   page_size?: number;
@@ -66,9 +66,10 @@ export interface IReplyEditParams extends ICommentEditParams {}
 export interface IMusicAddParams {
   title: string;
   name: string;
-  url: string;
+  url: IInputUploadValue;
   singer: string;
   lyrics: string;
+  poster: IInputUploadValue;
 }
 
 export type IMuiscEditParams = Partial<IMusicAddParams>;
@@ -77,3 +78,12 @@ export interface IMuiscParams extends IPage {
   state?: number;
   id?: string;
 }
+
+export interface IProjectParams {
+  title: string;
+  desc: string;
+  tags: string[];
+  github: string;
+}
+
+export interface IProjectPageParams extends IPage {}

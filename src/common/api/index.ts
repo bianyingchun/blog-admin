@@ -11,7 +11,8 @@ import {
   ICommentPageParams,
   IReplyPageParmas,
   IMusicAddParams,
-  IMuiscEditParams,
+  IProjectParams,
+  IProjectPageParams,
 } from "src/types/request";
 
 // 分页文章列表
@@ -80,16 +81,67 @@ export const getReplys = (params: IReplyPageParmas) =>
   request("/reply/get", "get", params);
 
 // 上传音乐封面
-export const uploadMusicPoster = (data: any) =>
-  request("/music/upload", "post", data);
+export const uploadMusicPoster = (file: File) => {
+  const formData = new FormData();
+  formData.set("file", file);
+  formData.set("name", file.name);
+  return request("/music/upload", "post", formData);
+};
 
-export const addMusic = (params: IMusicAddParams) =>
-  request("/music/add", "post", params);
-
-export const editMusic = (id: string, info: IMuiscEditParams) =>
-  request("/music/edit", "post", { id, info });
+const dealMusicParams = async (params: IMusicAddParams) => {
+  const { title, url, singer, lyrics, poster } = params;
+  let info = { title, url, singer, lyrics } as any;
+  if (url.text) {
+    info.url = url.text;
+  } else if (url.fileList) {
+    let res = await uploadMusicPoster(url.fileList[0]);
+    if (res) {
+      info.url = res.result;
+    } else {
+      return;
+    }
+  }
+  if (poster.text) {
+    info.poster = poster.text;
+  } else if (poster.fileList) {
+    let res = await uploadMusicPoster(poster.fileList[0]);
+    if (res) {
+      info.poster = res.result;
+    } else {
+      return;
+    }
+  }
+  return info;
+};
+export const addMusic = async (params: IMusicAddParams) => {
+  let addParams = await dealMusicParams(params);
+  if (!addParams) return;
+  return await request("/music/add", "post", addParams);
+};
+export const editMusic = async (id: string, params: IMusicAddParams) => {
+  let info = await dealMusicParams(params);
+  if (!info) return;
+  return await request("/music/edit", "post", { id, info });
+};
 
 export const deleteMusic = (id: string) =>
   request("/muisc/delete", "post", { id });
 
-// export const getMusic = (params:)
+export const getMusicById = (id: string) => request("music/get", "get", { id });
+
+// ================项目=========
+
+export const addProject = (params: IProjectParams) =>
+  request("project/add", "post", params);
+// 删除
+export const deleteProject = (id: string) =>
+  request("/project/delete", "post", { id });
+// 编辑
+export const editProject = (id: string, info: IProjectParams) =>
+  request("/project/edit", "post", { id, info });
+//
+export const getProjectById = (id: string) =>
+  request("/project/get", "get", { id });
+
+export const getProjectList = (params: IProjectPageParams) =>
+  request("/project/getAll", "get", params);

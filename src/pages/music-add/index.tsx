@@ -1,29 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Input} from "antd";
+import { Button, Form, Input } from "antd";
 import "./style.scss";
 import { useLocation, useParams, useHistory } from "react-router-dom";
-import {
-  addArticle,
-  getTags,
-  getArticleById,
-  editArticle,
-} from "src/common/api";
+import { addMusic, getMusicById, editMusic } from "src/common/api";
 import InputUpload from "src/components/input-upload";
 import { IInputUploadValue } from "src/types";
 const { TextArea } = Input;
 
-const ArticleAdd: React.FC<{}> = () => {
+const MusicAdd: React.FC<{}> = () => {
   const location = useLocation();
   const history = useHistory();
   const param = useParams() as { id: string };
-  const [isEditArticle, setIsEditArticle] = useState<boolean>(false);
+  const [isEditMusic, setIsEditMusic] = useState<boolean>(false);
   const [form] = Form.useForm();
-
-  let articleState = 1;
-  const [articleContent, setArticleContent] = useState({
-    content: "",
-    editContent: "",
-  });
   const [initialValues, setInitialValues] = useState({
     title: "歌名",
     singer: "歌手",
@@ -32,67 +21,49 @@ const ArticleAdd: React.FC<{}> = () => {
     url: { text: "", fileList: [] },
   });
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const res = await getTags({});
-  //     if (res) {
-  //       const tags = res.result.list || [];
-  //       setTags(tags);
-  //       if (location.pathname.indexOf("edit") !== -1) {
-  //         const res = await getArticleById(param.id);
-  //         if (res && res.result) {
-  //           const {
-  //             desc,
-  //             title,
-  //             tags,
-  //             content,
-  //             editContent,
-  //             keywords,
-  //             state,
-  //           } = res.result;
-  //           let values = {
-  //             title,
-  //             desc,
-  //             keywords,
-  //             tags: tags.map((item: ITagItem) => item._id),
-  //           };
-  //           setInitialValues(values);
-  //           form.resetFields();
-  //           articleState = state;
-  //           setArticleContent({ content, editContent });
-  //         }
-  //         setIsEditArticle(true);
-  //       }
-  //     }
-  //   })();
-  // }, [location.pathname, param, param.id]);
+  useEffect(() => {
+    (async () => {
+      if (location.pathname.indexOf("edit") !== -1) {
+        const res = await getMusicById(param.id);
+        if (res && res.result) {
+          const { title, singer, lyrics, poster, url } = res.result;
+          let values = {
+            title,
+            singer,
+            lyrics,
+            poster: { text: poster, fileList: [] },
+            url: { text: url, fileList: [] },
+          };
+          setInitialValues(values);
+          form.resetFields();
+        }
+        setIsEditMusic(true);
+      }
+    })();
+  }, [form, location.pathname, param.id]);
   const checkFileOrText = (rule: any, value: IInputUploadValue) => {
-    console.log(rule, value);
     if (value.text || (value.fileList && value.fileList.length)) {
       return Promise.resolve();
     }
     return Promise.reject("请填写链接或上传文件");
   };
-  const handleSubmit = async (state: number) => {
+  const handleSubmit = async () => {
     await form.validateFields();
-    articleState = state;
     form.submit();
   };
   const handleFormFinish = async (values: any) => {
-    console.log(values);
-    const info = { ...values, ...articleContent, state: articleState };
-
-    if (isEditArticle) {
-      let res = await editArticle(param.id, info);
+    if (isEditMusic) {
+      let res = await editMusic(param.id, values);
       if (res) {
         alert("修改成功");
-        history.push("/article");
+        history.push("/musics");
       }
     } else {
-      let res = await addArticle(info);
+      let res = await addMusic(values);
       if (res) {
+        console.log(res);
         alert("保存成功");
-        history.push("/article");
+        history.push("/musics");
       }
     }
   };
@@ -148,7 +119,7 @@ const ArticleAdd: React.FC<{}> = () => {
           </Form>
         </div>
         <div className="btnbox">
-          <Button type="primary" onClick={() => handleSubmit(1)}>
+          <Button type="primary" onClick={() => handleSubmit()}>
             提交
           </Button>
         </div>
@@ -157,7 +128,7 @@ const ArticleAdd: React.FC<{}> = () => {
   );
 };
 
-export default ArticleAdd;
+export default MusicAdd;
 
 // https://www.jianshu.com/p/36d3574aeb78 文件上传
 // 自定义表单控件
