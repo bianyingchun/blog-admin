@@ -189,7 +189,17 @@ export interface IInputUploadProps {
 export interface IETableProps {
   columns: Array<IColumn>;
   fetchData: (pageInfo: IPageInfo) => Promise<any>;
-  editData: (id: string) => Promise<any>;
-  viewData: (id: string) => Promise<any>;
+  editData: (id: string) => void;
+  viewData: (id: string) => void;
   deleteData: (id: string) => Promise<any>;
+}
+
+export interface IProjectItem {
+  _id: string;
+  title: string;
+  desc: string;
+  tags: ITagItem[];
+  github: string;
+  create_at: Date;
+  update_at: Date;
 }
