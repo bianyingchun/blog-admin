@@ -203,3 +203,15 @@ export interface IProjectItem {
   create_at: Date;
   update_at: Date;
 }
+
+export interface IMusicItem {
+  _id: string;
+  title: string;
+  singer: string;
+  poster: string;
+  lyrics: string;
+  state: number;
+  url: string;
+  create_at: Date;
+  update_at: string;
+}

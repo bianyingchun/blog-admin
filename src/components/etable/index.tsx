@@ -53,7 +53,7 @@ const ArticleTable: React.FC<IETableProps> = ({
       key: "operation",
       dataIndex: "operation",
       render: (_: any, record: any) => {
-        const id = record.id;
+        const id = record._id;
         return (
           <span className="t_btn">
             <Button onClick={() => viewData(id)}>查看</Button>

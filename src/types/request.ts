@@ -65,7 +65,6 @@ export interface IReplyEditParams extends ICommentEditParams {}
 
 export interface IMusicAddParams {
   title: string;
-  name: string;
   url: IInputUploadValue;
   singer: string;
   lyrics: string;
@@ -87,3 +86,7 @@ export interface IProjectParams {
 }
 
 export interface IProjectPageParams extends IPage {}
+
+export interface IMusicPageParams extends IPage {
+  state?: 0 | 1 | 2;
+}

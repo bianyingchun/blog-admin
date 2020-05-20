@@ -1,4 +1,4 @@
-import { IArticleItem, ITagItem, IArticleMeta } from "src/types";
+import { IProjectItem, ITagItem} from "src/types";
 import { Tag } from "antd";
 import React from "react";
 import moment from "moment";
@@ -19,7 +19,7 @@ export default [
   {
     title: "#",
     key: "tIndex",
-    render: (_: any, record: IArticleItem, index: number) => (
+    render: (_: any, record: IProjectItem, index: number) => (
       <span>{index + 1}</span>
     ),
   },
@@ -41,7 +41,7 @@ export default [
   {
     title: "标签",
     key: "tags",
-    render: (_: any, record: IArticleItem) => {
+    render: (_: any, record: IProjectItem) => {
       return (
         <span>
           {record.tags.map((item: ITagItem, index: number) => {

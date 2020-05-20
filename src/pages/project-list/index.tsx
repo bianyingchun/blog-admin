@@ -1,5 +1,5 @@
 import React from "react";
-import { getProjectList, deleteProject, editProject } from 'src/common/api'
+import { getProjectList, deleteProject} from 'src/common/api'
 import ETable from 'src/components/etable'
 import columns from './column'
 import { useHistory } from "react-router-dom";

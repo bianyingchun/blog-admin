@@ -13,6 +13,7 @@ import {
   IMusicAddParams,
   IProjectParams,
   IProjectPageParams,
+  IMusicPageParams,
 } from "src/types/request";
 
 // 分页文章列表
@@ -128,6 +129,9 @@ export const deleteMusic = (id: string) =>
   request("/muisc/delete", "post", { id });
 
 export const getMusicById = (id: string) => request("music/get", "get", { id });
+
+export const getMusicList = (params: IMusicPageParams) =>
+  request("/music/getAll", "get", params);
 
 // ================项目=========
 
