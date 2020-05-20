@@ -29,12 +29,28 @@ export interface ITagEditParams {
 export interface ITagPageParams extends IPage {
   keyword?: string;
 }
-
-export interface ICommentAddParmas {
-  post_id: string;
+export interface IMessageAddParams {
   author: IVisitor;
   content: string;
 }
+export interface IMessageEditParams {
+  content: string;
+  state: number;
+}
+export interface IMessagePageParams extends IPage {
+  keyword?: string;
+  state?: 0 | 1 | 2;
+}
+
+export interface ICommentAddParams extends IMessageAddParams {
+  post_id: string;
+}
+
+export interface ICommentPageParams extends IMessagePageParams {
+  post_id?: string;
+  sort?: -1 | 1 | 2;
+}
+export interface ICommentEditParams extends IMessageEditParams {}
 
 export interface IReplyAddParams {
   post_id: string;
@@ -43,22 +59,11 @@ export interface IReplyAddParams {
   from: IVisitor;
   to?: IVisitor;
 }
-export interface ICommentPageParams extends IPage {
-  post_id?: string;
-  keyword?: string;
-  state?: 0 | 1 | 2;
-  sort?: -1 | 1 | 2;
-}
 export interface IReplyPageParmas extends IPage {
   cid?: string;
   keyword?: string;
   state?: 0 | 1 | 2;
   sort?: -1 | 1 | 2;
-}
-
-export interface ICommentEditParams {
-  content: string;
-  state: number;
 }
 
 export interface IReplyEditParams extends ICommentEditParams {}

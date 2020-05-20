@@ -67,7 +67,7 @@ const menuConfig: menuType[] = [
       {
         title: "全部留言",
         key: "message-all",
-        path: "/message",
+        path: "/messages",
       },
       {
         title: "新增留言",

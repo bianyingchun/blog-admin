@@ -4,7 +4,7 @@ import {
   IArticlePageParams,
   ITagEditParams,
   ITagPageParams,
-  ICommentAddParmas,
+  ICommentAddParams,
   IReplyAddParams,
   ICommentEditParams,
   IReplyEditParams,
@@ -14,6 +14,9 @@ import {
   IProjectParams,
   IProjectPageParams,
   IMusicPageParams,
+  IMessagePageParams,
+  IMessageAddParams,
+  IMessageEditParams,
 } from "src/types/request";
 
 // 分页文章列表
@@ -50,7 +53,7 @@ export const getTags = (params: ITagPageParams) =>
   request("/tag/getAll", "get", params);
 
 // 添加评论
-export const addComment = (params: ICommentAddParmas) =>
+export const addComment = (params: ICommentAddParams) =>
   request("/comment/add", "post", params);
 // 删除评论
 export const deleteComment = (id: string) =>
@@ -149,3 +152,18 @@ export const getProjectById = (id: string) =>
 
 export const getProjectList = (params: IProjectPageParams) =>
   request("/project/getAll", "get", params);
+
+// ==============留言==================
+
+// // 添加留言
+export const addMessage = (params: IMessageAddParams) =>
+  request("/message/add", "post", params);
+// 删除留言
+export const deleteMessage = (id: string) =>
+  request("/message/delete", "post", { id });
+// 编辑留言
+export const editMessage = (id: string, info: IMessageEditParams) =>
+  request("/message/edit", "post", { id, info });
+
+export const getMessage = (params: IMessagePageParams) =>
+  request("/message/get", "get", params);
