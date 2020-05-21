@@ -102,16 +102,10 @@ export interface IVisitor {
   email: string;
   site?: string;
 }
-
-export interface ICommentItem {
+export interface IMessageItem {
   _id: string;
-  post_id: string;
-  pid?: number;
-  post_title?: string;
   content: string;
-  likes: number;
   author: IVisitor;
-  reply: number;
   state: number;
   create_at: Date;
   update_at: Date;
@@ -120,6 +114,13 @@ export interface ICommentItem {
   range?: string;
   country?: string;
   agent?: string;
+}
+export interface ICommentItem extends IMessageItem {
+  post_id: string;
+  pid?: number;
+  post_title?: string;
+  likes: number;
+  reply: number;
 }
 export interface ICommentItemProps extends ICommentItem {
   remove: (id: string) => void;

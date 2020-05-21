@@ -19,6 +19,7 @@ const ProjectAdd = loadable(() => import("src/pages/project-add"));
 const MusicList = loadable(() => import("src/pages/music-list"));
 const MusicAdd = loadable(() => import("src/pages/music-add"));
 const MessageList = loadable(() => import("src/pages/message-list"));
+const MessageAdd = loadable(() => import("src/pages/message-add"))
 // 测试页面
 const Test = loadable(() => import("src/pages/test"));
 export const routes: Array<IRouteItem> = [
@@ -101,6 +102,10 @@ export const routes: Array<IRouteItem> = [
       {
         path: "/messages",
         component: MessageList,
+      },
+      {
+        path: '/message-add',
+        component:MessageAdd
       },
       {
         path: "/",

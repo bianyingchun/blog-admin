@@ -139,7 +139,7 @@ export const getMusicList = (params: IMusicPageParams) =>
 // ================项目=========
 
 export const addProject = (params: IProjectParams) =>
-  request("project/add", "post", params);
+  request("/project/add", "post", params);
 // 删除
 export const deleteProject = (id: string) =>
   request("/project/delete", "post", { id });
@@ -165,5 +165,5 @@ export const deleteMessage = (id: string) =>
 export const editMessage = (id: string, info: IMessageEditParams) =>
   request("/message/edit", "post", { id, info });
 
-export const getMessage = (params: IMessagePageParams) =>
+export const getMessageList = (params: IMessagePageParams) =>
   request("/message/get", "get", params);
