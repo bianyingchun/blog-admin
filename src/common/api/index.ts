@@ -17,6 +17,7 @@ import {
   IMessagePageParams,
   IMessageAddParams,
   IMessageEditParams,
+  ILoginParams,
 } from "src/types/request";
 
 // 分页文章列表
@@ -166,4 +167,10 @@ export const editMessage = (id: string, info: IMessageEditParams) =>
   request("/message/edit", "post", { id, info });
 
 export const getMessageList = (params: IMessagePageParams) =>
-  request("/message/get", "get", params);
+  request("/message/list", "get", params);
+
+export const getAllMessage = () => request("/message/all", "get");
+// 登录
+
+export const login = (params: ILoginParams) =>
+  request("/user/login", "post", params);

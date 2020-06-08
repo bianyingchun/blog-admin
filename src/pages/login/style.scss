@@ -1,0 +1,13 @@
+.login-wraper {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #283744;
+  .form-wraper {
+    width: 400px;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+  }
+}

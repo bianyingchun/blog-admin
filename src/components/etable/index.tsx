@@ -12,7 +12,7 @@ const ArticleTable: React.FC<IETableProps> = ({
   const [data, setData] = useState<Array<any>>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
-  const [pageSize] = useState<number>(3);
+  const [pageSize] = useState<number>(10);
   const paginationProps = {
     showTotal: () => `共${total}条`,
     pageSize: pageSize,

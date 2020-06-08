@@ -150,7 +150,7 @@ const ArticleAdd: React.FC<{}> = () => {
         </div>
         <Edit
           handleEditChange={handleEditChange}
-          content={articleContent.editContent}
+          content={articleContent.content}
         />
         <div className="btnbox">
           <Button type="primary" onClick={() => handleSubmit(1)}>

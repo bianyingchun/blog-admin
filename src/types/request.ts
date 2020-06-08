@@ -3,11 +3,12 @@ export interface IPage {
   current_page?: number;
   page_size?: number;
 }
+
 export interface IArticlePageParams extends IPage {
   keyword?: string;
-  state?: 1 | 2;
-  publish?: 1 | 2;
-  type?: 1 | 2 | 3;
+  state?: number;
+  publish?: number;
+  type?: number;
   hot?: boolean;
   date?: Date;
 }
@@ -30,7 +31,6 @@ export interface ITagPageParams extends IPage {
   keyword?: string;
 }
 export interface IMessageAddParams {
-  author: IVisitor;
   content: string;
 }
 export interface IMessageEditParams {
@@ -39,16 +39,18 @@ export interface IMessageEditParams {
 }
 export interface IMessagePageParams extends IPage {
   keyword?: string;
-  state?: 0 | 1 | 2;
+  state?: number;
 }
 
-export interface ICommentAddParams extends IMessageAddParams {
+export interface ICommentAddParams {
   post_id: string;
+  author: IVisitor;
+  content: string;
 }
 
 export interface ICommentPageParams extends IMessagePageParams {
   post_id?: string;
-  sort?: -1 | 1 | 2;
+  sort?: number;
 }
 export interface ICommentEditParams extends IMessageEditParams {}
 
@@ -62,8 +64,8 @@ export interface IReplyAddParams {
 export interface IReplyPageParmas extends IPage {
   cid?: string;
   keyword?: string;
-  state?: 0 | 1 | 2;
-  sort?: -1 | 1 | 2;
+  state?: number;
+  sort?: number;
 }
 
 export interface IReplyEditParams extends ICommentEditParams {}
@@ -93,5 +95,10 @@ export interface IProjectParams {
 export interface IProjectPageParams extends IPage {}
 
 export interface IMusicPageParams extends IPage {
-  state?: 0 | 1 | 2;
+  state?: number;
+}
+
+export interface ILoginParams {
+  password: string;
+  username: String;
 }

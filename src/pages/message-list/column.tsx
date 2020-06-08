@@ -24,25 +24,6 @@ export default [
     render: (t: Date) => <span>{moment(t).format("YYYY-MM-DD HH:mm:ss")}</span>,
   },
   {
-    title: "IP",
-    dataIndex: "ip",
-    key: "ip",
-  },
-  {
-    title: "留言者信息",
-    dataIndex: "author",
-    key: "author",
-    render: (author: IVisitor) => {
-      return (
-        <span>
-          <div>名称：{author.name}</div>
-          <div>邮箱：{author.email}</div>
-          <div>网站：{author.name}</div>
-        </span>
-      );
-    },
-  },
-  {
     title: "状态",
     key: "state",
     dataIndex: "state",

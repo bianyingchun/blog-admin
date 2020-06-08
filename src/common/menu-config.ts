@@ -35,11 +35,6 @@ const menuConfig: menuType[] = [
         key: "article-draft",
         path: "/article-draft",
       },
-      {
-        title: "文章归类",
-        key: "article-classify",
-        path: "/article-classify",
-      },
     ],
   },
   {

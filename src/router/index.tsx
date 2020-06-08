@@ -7,7 +7,6 @@ const Login = loadable(() => import("src/pages/login"));
 const Logout = loadable(() => import("src/pages/logout"));
 const ArticleAdd = loadable(() => import("src/pages/article-add"));
 const ArticleList = loadable(() => import("src/pages/article-list"));
-const ArticleClassify = loadable(() => import("src/pages/article-classify"));
 const ArticleComments = loadable(() => import("src/pages/article-comments"));
 const ArticleReplies = loadable(() => import("src/pages/article-replies"));
 const ArticleDraft = loadable(() => import("src/pages/article-draft"));
@@ -19,7 +18,7 @@ const ProjectAdd = loadable(() => import("src/pages/project-add"));
 const MusicList = loadable(() => import("src/pages/music-list"));
 const MusicAdd = loadable(() => import("src/pages/music-add"));
 const MessageList = loadable(() => import("src/pages/message-list"));
-const MessageAdd = loadable(() => import("src/pages/message-add"))
+const MessageAdd = loadable(() => import("src/pages/message-add"));
 // 测试页面
 const Test = loadable(() => import("src/pages/test"));
 export const routes: Array<IRouteItem> = [
@@ -50,10 +49,6 @@ export const routes: Array<IRouteItem> = [
       {
         path: "/article-edit/:id",
         component: ArticleAdd,
-      },
-      {
-        path: "/article-classify",
-        component: ArticleClassify,
       },
       {
         path: "/article-draft",
@@ -104,8 +99,8 @@ export const routes: Array<IRouteItem> = [
         component: MessageList,
       },
       {
-        path: '/message-add',
-        component:MessageAdd
+        path: "/message-add",
+        component: MessageAdd,
       },
       {
         path: "/",
