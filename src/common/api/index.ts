@@ -51,7 +51,7 @@ export const editTag = (param: ITagEditParams) =>
   request("/tag/edit", "post", param);
 // 获取标签
 export const getTags = (params: ITagPageParams) =>
-  request("/tag/getAll", "get", params);
+  request("/tag/list", "get", params);
 
 // 添加评论
 export const addComment = (params: ICommentAddParams) =>
