@@ -24,7 +24,7 @@ const ArticleTable: React.FC<IArticleTableProps> = ({
   return (
     <div>
       <div className="header-title">{title}</div>
-      <div className="p20">
+      <div className="page-content">
         <Table
           bordered
           dataSource={data}

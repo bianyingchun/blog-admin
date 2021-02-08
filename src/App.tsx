@@ -5,8 +5,8 @@ import zhCN from "antd/es/locale/zh_CN";
 import { ConfigProvider } from "antd";
 import RouterView from "src/router";
 import "./App.scss";
-moment.locale("zh-cn");
 
+moment.locale("zh-cn");
 // 防止路由切换，滚动条处于上个页面保持的位置，
 function routerBeforeEnterHook(path: string) {
   window.scrollTo({
@@ -14,7 +14,6 @@ function routerBeforeEnterHook(path: string) {
     behavior: "smooth",
   });
 }
-
 function App() {
   return (
     <ConfigProvider locale={zhCN}>

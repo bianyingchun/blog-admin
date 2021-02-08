@@ -2,18 +2,6 @@ import { IArticleItem, ITagItem, IArticleMeta } from "src/types";
 import { Tag } from "antd";
 import React from "react";
 import moment from "moment";
-const colorArr = [
-  "magenta",
-  "geekblue",
-  "red",
-  "volcano",
-  "orange",
-  "gold",
-  "lime",
-  "green",
-  "cyan",
-  "purple",
-];
 const initColumns = (Operation: React.FC<any>) => {
   return [
     {
@@ -38,11 +26,7 @@ const initColumns = (Operation: React.FC<any>) => {
         return (
           <span>
             {record.tags.map((item: ITagItem, index: number) => {
-              return (
-                <Tag key={index} color={colorArr[index % 10]}>
-                  {item.name}
-                </Tag>
-              );
+              return <Tag key={index}>{item.name}</Tag>;
             })}
           </span>
         );
@@ -50,12 +34,10 @@ const initColumns = (Operation: React.FC<any>) => {
     },
     {
       title: "更新日期",
-      width: 250,
+      width: 150,
       dataIndex: "update_at",
       key: "update_at",
-      render: (t: Date) => (
-        <span>{moment(t).format("YYYY-MM-DD HH:mm:ss")}</span>
-      ),
+      render: (t: Date) => <span>{moment(t).format("YYYY-MM-DD HH:mm")}</span>,
     },
     {
       title: "元信息",

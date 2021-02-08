@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Divider, Table, Form } from "antd";
+import { Button, Table, Form, Popconfirm, message } from "antd";
 import { IEditableTableProps } from "src/types";
 import EditableCell from "src/components/editable-cell";
 const EditableTable: React.FC<IEditableTableProps> = ({
@@ -13,7 +13,7 @@ const EditableTable: React.FC<IEditableTableProps> = ({
   const [data, setData] = useState<Array<any>>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(3);
+  const [pageSize] = useState<number>(10);
   const paginationProps = {
     showTotal: () => `共${total}条`,
     pageSize: pageSize,
@@ -32,6 +32,8 @@ const EditableTable: React.FC<IEditableTableProps> = ({
         let { list, pagination } = res.result;
         setData(list || []);
         setTotal(pagination.total);
+      } else {
+        message.error("加载失败");
       }
     })();
   }, [currentPage, fetchData, pageSize]);
@@ -47,9 +49,9 @@ const EditableTable: React.FC<IEditableTableProps> = ({
       const index = newData.findIndex((item) => item._id === id);
       newData.splice(index, 1);
       setData(newData);
-      alert("删除成功");
+      message.success("删除成功");
     } else {
-      alert("删除失败");
+      message.error("删除失败");
     }
   };
   const isEditing = (record: any) => record._id === editingKey;
@@ -57,16 +59,19 @@ const EditableTable: React.FC<IEditableTableProps> = ({
   const save = async (record: any) => {
     try {
       const res = (await form.validateFields()) as any;
-      await editData(record._id, res);
-      const newData: any[] = [...data];
-      const index = newData.findIndex((item: any) => record._id === item._id);
-      newData.splice(index, 1, { ...record, ...res });
-      setEditingKey("");
-      setData(newData);
-      alert("修改成功");
+      const result = await editData(record._id, res);
+      if (result) {
+        const newData: any[] = [...data];
+        const index = newData.findIndex((item: any) => record._id === item._id);
+        newData.splice(index, 1, { ...record, ...res });
+        setEditingKey("");
+        setData(newData);
+        message.success("修改成功");
+      } else {
+        message.error("修改失败");
+      }
     } catch (err) {
-      setEditingKey("");
-      alert("修改失败");
+      console.log(err);
     }
   };
   const cancel = () => {
@@ -82,22 +87,22 @@ const EditableTable: React.FC<IEditableTableProps> = ({
         const editable = isEditing(record);
 
         return editable ? (
-          <span>
-            <Button type="link" onClick={() => save(record)}>
-              保存
-            </Button>
-            <Divider type="vertical" />
-            <Button type="link" onClick={() => cancel()}>
-              取消
-            </Button>
-          </span>
+          <div className="btn-groups">
+            <Button onClick={() => save(record)}>保存</Button>
+            <br />
+            <Button onClick={() => cancel()}>取消</Button>
+          </div>
         ) : (
-          <span className="t_btn">
-            <Divider type="vertical" />
+          <div className="btn-groups">
             <Button onClick={() => edit(record)}>修改</Button>
-            <Divider type="vertical" />
-            <Button onClick={() => remove(record._id)}>删除</Button>
-          </span>
+            <br />
+            <Popconfirm
+              title="确认删除这条数据？"
+              onConfirm={() => remove(record._id)}
+            >
+              <Button>删除</Button>
+            </Popconfirm>
+          </div>
         );
       },
     },
@@ -115,7 +120,7 @@ const EditableTable: React.FC<IEditableTableProps> = ({
     };
   });
   return (
-    <div className="p20">
+    <div className="page-content">
       <Form form={form} component={false}>
         <Table
           components={{ body: { cell: EditableCell } }}

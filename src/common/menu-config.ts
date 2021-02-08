@@ -1,4 +1,4 @@
-import { menuType } from "src/types";
+import { MenuType } from "src/types";
 import {
   HomeOutlined,
   EditOutlined,
@@ -8,7 +8,7 @@ import {
   PlayCircleOutlined,
   ProjectOutlined,
 } from "@ant-design/icons";
-const menuConfig: menuType[] = [
+const menuConfig: MenuType[] = [
   {
     title: "HOME",
     key: "home",
@@ -23,7 +23,7 @@ const menuConfig: menuType[] = [
       {
         title: "文章列表",
         key: "article-list",
-        path: "/article",
+        path: "/article-list",
       },
       {
         title: "添加文章",
@@ -44,8 +44,8 @@ const menuConfig: menuType[] = [
     children: [
       {
         title: "全部标签",
-        key: "tags-all",
-        path: "/tags",
+        key: "tag-list",
+        path: "/tag-list",
       },
       {
         title: "新增标签",
@@ -61,8 +61,8 @@ const menuConfig: menuType[] = [
     children: [
       {
         title: "全部留言",
-        key: "message-all",
-        path: "/messages",
+        key: "message-list",
+        path: "/message-list",
       },
       {
         title: "新增留言",
@@ -95,8 +95,8 @@ const menuConfig: menuType[] = [
     children: [
       {
         title: "全部项目",
-        key: "project-all",
-        path: "/projects",
+        key: "project-list",
+        path: "/project-list",
       },
       {
         title: "新增项目",
@@ -113,7 +113,7 @@ const menuConfig: menuType[] = [
       {
         title: "音乐列表",
         key: "music-list",
-        path: "/musics",
+        path: "/music-list",
       },
       {
         title: "新增音乐",

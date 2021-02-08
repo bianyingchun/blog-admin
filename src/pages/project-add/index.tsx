@@ -1,14 +1,43 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Input, Col, Select } from "antd";
+import { Button, Form, Input, Select, message } from "antd";
 import "./style.scss";
 import { useLocation, useParams, useHistory } from "react-router-dom";
+import InputUpload from "src/components/input-upload";
 import {
   addProject,
   getTags,
   getProjectById,
   editProject,
 } from "src/common/api";
-import { ITagItem } from "src/types";
+import { IInputUploadValue, ITagItem } from "src/types";
+const checkFileOrText = (rule: any, value: IInputUploadValue) => {
+  if (value.text || (value.fileList && value.fileList.length)) {
+    return Promise.resolve();
+  }
+  return Promise.reject("请填写链接或上传文件");
+};
+const formInputConfigs = [
+  {
+    name: "title",
+    label: "标题",
+    required: true,
+  },
+  {
+    name: "desc",
+    label: "描述",
+    required: true,
+  },
+  {
+    name: "github",
+    label: "github地址",
+    required: true,
+  },
+  {
+    name: "url",
+    label: "线上地址",
+    required: false,
+  },
+];
 const { Option } = Select;
 const ProjectAdd: React.FC<{}> = () => {
   const location = useLocation();
@@ -18,10 +47,12 @@ const ProjectAdd: React.FC<{}> = () => {
   const [form] = Form.useForm();
   const [tags, setTags] = useState([]);
   const [initialValues, setInitialValues] = useState({
-    title: "默认值",
+    title: "",
     desc: "",
     github: "",
     tags: [],
+    url: "",
+    preview: { text: "", fileList: [] },
   });
   useEffect(() => {
     (async () => {
@@ -32,11 +63,20 @@ const ProjectAdd: React.FC<{}> = () => {
         if (location.pathname.indexOf("edit") !== -1) {
           const res = await getProjectById(param.id);
           if (res && res.result) {
-            const { desc, title, tags, github } = res.result;
+            const {
+              desc,
+              title,
+              tags,
+              github,
+              preview = "",
+              url = "",
+            } = res.result;
             let values = {
               title,
               desc,
               github,
+              url,
+              preview: { text: preview, fileList: [] },
               tags: tags.map((item: ITagItem) => item._id),
             };
             setInitialValues(values);
@@ -58,39 +98,29 @@ const ProjectAdd: React.FC<{}> = () => {
     if (isEditProject) {
       let res = await editProject(param.id, info);
       if (res) {
-        alert("修改成功");
-        history.push("/projects");
+        message.success("修改成功");
+        history.push("/project-list");
+      } else {
+        message.error("修改失败");
       }
     } else {
       let res = await addProject(info);
       if (res) {
-        alert("保存成功");
-        history.push("/projects");
+        message.success("添加成功");
+        history.push("/project-list");
+      } else {
+        message.error("添加失败");
       }
     }
   };
 
-  const formInputConfigs = [
-    {
-      name: "title",
-      label: "标题",
-    },
-    {
-      name: "desc",
-      label: "描述",
-    },
-    {
-      name: "github",
-      label: "github地址",
-    },
-  ];
   return (
     <div>
       <div className="header-title">
         {isEditProject ? "编辑项目" : "添加项目"}
       </div>
-      <div className="p20">
-        <div className="base-info">
+      <div className="page-content">
+        <div className="form-container">
           <Form
             form={form}
             initialValues={initialValues}
@@ -101,37 +131,43 @@ const ProjectAdd: React.FC<{}> = () => {
           >
             {formInputConfigs.map((item, index) => {
               return (
-                <Col span={12} key={index}>
-                  <Form.Item
-                    {...item}
-                    rules={[{ required: true, message: `请输入${item.label}` }]}
-                  >
-                    <Input placeholder={"请输入" + item.label} />
-                  </Form.Item>
-                </Col>
+                <Form.Item
+                  {...item}
+                  key={index}
+                  rules={[
+                    { required: item.required, message: `请输入${item.label}` },
+                  ]}
+                >
+                  <Input placeholder={"请输入" + item.label} />
+                </Form.Item>
               );
             })}
-            <Col span={12}>
-              <Form.Item
-                label="标签"
-                name="tags"
-                rules={[{ required: true, message: "请选择标签" }]}
-              >
-                <Select mode="multiple" placeholder="请选择标签">
-                  {tags.map((item: ITagItem) => (
-                    <Option value={item._id} key={item._id}>
-                      {item.name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </Col>
+            <Form.Item
+              label="标签"
+              name="tags"
+              rules={[{ required: true, message: "请选择标签" }]}
+            >
+              <Select mode="multiple" placeholder="请选择标签">
+                {tags.map((item: ITagItem) => (
+                  <Option value={item._id} key={item._id}>
+                    {item.name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="preview"
+              label="预览图片链接"
+              rules={[{ validator: checkFileOrText }, { required: false }]}
+            >
+              <InputUpload accept=".jpg, .jpeg, .png" />
+            </Form.Item>
           </Form>
-        </div>
-        <div className="btnbox">
-          <Button type="primary" onClick={() => handleSubmit()}>
-            提交
-          </Button>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button type="primary" onClick={() => handleSubmit()}>
+              提交
+            </Button>
+          </div>
         </div>
       </div>
     </div>

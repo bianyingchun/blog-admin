@@ -1,20 +1,8 @@
 import { IArticleItem, ITagItem, IArticleMeta } from "src/types";
-import { Tag } from "antd";
+import { Tag, Divider } from "antd";
 import React from "react";
 import moment from "moment";
-const colorArr = [
-  "magenta",
-  "geekblue",
-  "red",
-  "volcano",
-  "orange",
-  "gold",
-  "lime",
-  "green",
-  "cyan",
-  "purple",
-];
-
+import { ARTICLE_TYPES } from "src/common/constant";
 export default [
   {
     title: "#",
@@ -29,17 +17,21 @@ export default [
     dataIndex: "title",
   },
   {
+    title: "类型",
+    key: "type",
+    dataIndex: "type",
+    render: (_: any, record: IArticleItem) => {
+      return <span>{ARTICLE_TYPES[record.type || 0].text}</span>;
+    },
+  },
+  {
     title: "标签",
     key: "tags",
     render: (_: any, record: IArticleItem) => {
       return (
         <span>
           {record.tags.map((item: ITagItem, index: number) => {
-            return (
-              <Tag key={index} color={colorArr[index % 10]}>
-                {item.name}
-              </Tag>
-            );
+            return <Tag key={index}>{item.name}</Tag>;
           })}
         </span>
       );
@@ -47,7 +39,6 @@ export default [
   },
   {
     title: "更新日期",
-    width: 250,
     dataIndex: "update_at",
     key: "update_at",
     render: (t: Date) => <span>{moment(t).format("YYYY-MM-DD HH:mm")}</span>,
@@ -57,7 +48,13 @@ export default [
     dataIndex: "meta",
     key: "meta",
     render: (meta: IArticleMeta) => (
-      <span>{`评论：${meta.comments}、浏览：${meta.views}、喜欢：${meta.likes}`}</span>
+      <div>
+        <span>评论：{meta.comments}</span>
+        <Divider type="vertical" />
+        <span>浏览：{meta.views}</span>
+        <Divider type="vertical" />
+        <span>喜欢：{meta.likes}</span>
+      </div>
     ),
   },
 ];

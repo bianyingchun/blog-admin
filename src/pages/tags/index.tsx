@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getTags, editTag, deleteTag } from "src/common/api";
 import { ITagItem } from "src/types";
-import { Table, Form, Button, Divider } from "antd";
+import { Table, Form, Button, message, Popconfirm } from "antd";
 import EditableCell from "src/components/editable-cell";
 const Tags: React.FC = () => {
   const [form] = Form.useForm();
@@ -27,13 +27,13 @@ const Tags: React.FC = () => {
       await editTag({ id, ...res });
       const newData: ITagItem[] = [...data];
       const index = newData.findIndex((item: ITagItem) => id === item._id);
-      newData.splice(index, 1, { _id: id, ...res });
+      newData.splice(index, 1, { ...res, _id: id });
       setEditingKey("");
       setData(newData);
-      alert("修改成功");
+      message.success("修改成功");
     } catch (err) {
       setEditingKey("");
-      alert("修改失败");
+      message.error("修改失败");
     }
   };
   const cancel = () => {
@@ -46,9 +46,9 @@ const Tags: React.FC = () => {
       const index = newData.findIndex((item: ITagItem) => id === item._id);
       newData.splice(index, 1);
       setData(newData);
-      alert("删除成功");
+      message.success("删除成功");
     } else {
-      alert("删除失败");
+      message.error("删除失败");
     }
     setEditingKey("");
   };
@@ -61,25 +61,22 @@ const Tags: React.FC = () => {
       render: (_: any, record: ITagItem) => {
         const editable = isEditing(record);
         return editable ? (
-          <span>
-            <Button type="link" onClick={() => save(record._id)}>
-              保存
-            </Button>
-            <Divider type="vertical" />
-            <Button type="link" onClick={() => cancel()}>
-              取消
-            </Button>
-          </span>
+          <div className="btn-groups">
+            <Button onClick={() => save(record._id)}>保存</Button>
+            <br />
+            <Button onClick={() => cancel()}>取消</Button>
+          </div>
         ) : (
-          <span>
-            <Button type="link" onClick={() => edit(record)}>
-              编辑
-            </Button>
-            <Divider type="vertical" />
-            <Button type="link" onClick={() => remove(record._id)}>
-              删除
-            </Button>
-          </span>
+          <div className="btn-groups">
+            <Button onClick={() => edit(record)}>编辑</Button>
+            <br />
+            <Popconfirm
+              title="确认删除此标签？"
+              onConfirm={() => remove(record._id)}
+            >
+              <Button>删除</Button>
+            </Popconfirm>
+          </div>
         );
       },
     },
@@ -102,7 +99,7 @@ const Tags: React.FC = () => {
   return (
     <div>
       <div className="header-title">标签列表</div>
-      <div className="p20">
+      <div className="page-content">
         <Form form={form} component={false}>
           <Table
             components={{ body: { cell: EditableCell } }}

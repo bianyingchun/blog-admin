@@ -26,7 +26,7 @@ export default [
     title: "评论日期",
     dataIndex: "create_at",
     key: "create_at",
-    render: (t: Date) => <span>{moment(t).format("YYYY-MM-DD HH:mm:ss")}</span>,
+    render: (t: Date) => <span>{moment(t).format("YYYY-MM-DD HH:mm")}</span>,
   },
   {
     title: "IP",
@@ -35,8 +35,8 @@ export default [
   },
   {
     title: "评论者信息",
-    dataIndex: "author",
-    key: "author",
+    dataIndex: "from",
+    key: "from",
     render: (author: IVisitor) => {
       return (
         <span>

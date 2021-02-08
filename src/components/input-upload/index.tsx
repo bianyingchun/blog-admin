@@ -7,14 +7,15 @@ const InputUpload: React.FC<IInputUploadProps> = ({
   onChange,
   accept,
 }) => {
-  const [text, setText] = useState(value.text || '');
+  const [text, setText] = useState(value.text || "");
   const [fileList, setFileList] = useState<any>([]);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newText = e.target.value;
-    setText(newText)
-    triggerChange({ text: newText});
+    setText(newText);
+    triggerChange({ text: newText });
   };
   const triggerChange = (changedValue: IInputUploadValue) => {
+    console.log(changedValue, "upload", onChange);
     if (onChange) {
       onChange({ text, fileList, ...value, ...changedValue });
     }
@@ -33,7 +34,7 @@ const InputUpload: React.FC<IInputUploadProps> = ({
   };
   const beforeUploadHandle = (file: any) => {
     setFileList([file]);
-    triggerChange({fileList:[file]})
+    triggerChange({ fileList: [file] });
     return false;
   };
   const uploadProps = {

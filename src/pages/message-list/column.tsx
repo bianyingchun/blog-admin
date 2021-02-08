@@ -1,4 +1,4 @@
-import { IMessageItem, IVisitor } from "src/types";
+import { IMessageItem } from "src/types";
 import React from "react";
 import moment from "moment";
 import { Form, Select } from "antd";

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Input } from "antd";
-import "./style.scss";
+import { Button, Form, Input, message } from "antd";
 import { useLocation, useParams, useHistory } from "react-router-dom";
 import { addMusic, getMusicById, editMusic } from "src/common/api";
 import InputUpload from "src/components/input-upload";
@@ -55,15 +54,18 @@ const MusicAdd: React.FC<{}> = () => {
     if (isEditMusic) {
       let res = await editMusic(param.id, values);
       if (res) {
-        alert("修改成功");
-        history.push("/musics");
+        message.success("修改成功");
+        history.push("/music-list");
+      } else {
+        message.error("修改失败");
       }
     } else {
       let res = await addMusic(values);
       if (res) {
-        console.log(res);
-        alert("保存成功");
-        history.push("/musics");
+        message.success("添加成功");
+        history.push("/music-list");
+      } else {
+        message.error("添加失败");
       }
     }
   };
@@ -71,8 +73,8 @@ const MusicAdd: React.FC<{}> = () => {
   return (
     <div>
       <div className="header-title">新增音乐</div>
-      <div className="p20">
-        <div className="base-info">
+      <div className="page-content">
+        <div className="form-container">
           <Form
             form={form}
             initialValues={initialValues}
@@ -117,11 +119,11 @@ const MusicAdd: React.FC<{}> = () => {
               <InputUpload accept=".flac, .ape, .mp3" />
             </Form.Item>
           </Form>
-        </div>
-        <div className="btnbox">
-          <Button type="primary" onClick={() => handleSubmit()}>
-            提交
-          </Button>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button type="primary" onClick={() => handleSubmit()}>
+              提交
+            </Button>
+          </div>
         </div>
       </div>
     </div>

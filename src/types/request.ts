@@ -19,6 +19,9 @@ export interface IArticleEditParmas {
   editContent: string;
   keywords: string;
   desc: string;
+  origin: number;
+  state?: number;
+  thumb?: IInputUploadValue;
 }
 
 export interface ITagEditParams {
@@ -90,6 +93,8 @@ export interface IProjectParams {
   desc: string;
   tags: string[];
   github: string;
+  url?: string;
+  preview?: IInputUploadValue;
 }
 
 export interface IProjectPageParams extends IPage {}

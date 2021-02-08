@@ -3,6 +3,8 @@ import { Button, message, Form, Input, Col, Select } from "antd";
 import "./style.scss";
 import Edit from "./edit";
 import { useLocation, useParams, useHistory } from "react-router-dom";
+import InputUpload from "src/components/input-upload";
+
 import {
   addArticle,
   getTags,
@@ -10,7 +12,9 @@ import {
   editArticle,
 } from "src/common/api";
 import { ITagItem } from "src/types";
+import { ARTICLE_TYPES } from "src/common/constant";
 const { Option } = Select;
+
 const ArticleAdd: React.FC<{}> = () => {
   const location = useLocation();
   const history = useHistory();
@@ -24,10 +28,15 @@ const ArticleAdd: React.FC<{}> = () => {
     editContent: "",
   });
   const [initialValues, setInitialValues] = useState({
-    title: "默认值",
+    title: "",
     desc: "",
     keywords: "",
     tags: [],
+    type: 0,
+    thumb: {
+      text: "",
+      fileList: [],
+    },
   });
   useEffect(() => {
     (async () => {
@@ -46,15 +55,20 @@ const ArticleAdd: React.FC<{}> = () => {
               editContent,
               keywords,
               state,
+              type = 0,
+              thumb = "",
             } = res.result;
             let values = {
               title,
               desc,
               keywords,
+              type,
+              thumb: { text: thumb, fileList: [] },
               tags: tags.map((item: ITagItem) => item._id),
             };
             setInitialValues(values);
             form.resetFields();
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             articleState = state;
             setArticleContent({ content, editContent });
           }
@@ -68,24 +82,31 @@ const ArticleAdd: React.FC<{}> = () => {
     setArticleContent({ content, editContent });
   };
   const handleSubmit = async (state: number) => {
-    await form.validateFields();
-    articleState = state;
-    form.submit();
+    try {
+      await form.validateFields();
+      articleState = state;
+      form.submit();
+    } catch (err) {
+      console.log(err);
+    }
   };
   const handleFormFinish = async (values: any) => {
     const info = { ...values, ...articleContent, state: articleState };
-
     if (isEditArticle) {
       let res = await editArticle(param.id, info);
       if (res) {
-        alert("修改成功");
-        history.push("/article");
+        message.success("修改成功");
+        history.push("/article-list");
+      } else {
+        message.error("修改失败");
       }
     } else {
       let res = await addArticle(info);
       if (res) {
-        alert("保存成功");
-        history.push("/article");
+        message.success("添加成功");
+        history.push("/article-list");
+      } else {
+        message.error("添加失败");
       }
     }
   };
@@ -109,7 +130,7 @@ const ArticleAdd: React.FC<{}> = () => {
       <div className="header-title">
         {isEditArticle ? "编辑文章" : "添加文章"}
       </div>
-      <div className="p20">
+      <div className="page-content">
         <div className="base-info">
           <Form
             form={form}
@@ -146,6 +167,26 @@ const ArticleAdd: React.FC<{}> = () => {
                 </Select>
               </Form.Item>
             </Col>
+            <Col span={12}>
+              <Form.Item
+                label="类型"
+                name="type"
+                rules={[{ required: true, message: "请选择文章类型" }]}
+              >
+                <Select placeholder="请选择文章类型">
+                  {ARTICLE_TYPES.map((item) => (
+                    <Option value={item.val} key={item.val}>
+                      {item.text}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="thumb" label="预览图">
+                <InputUpload accept=".jpg, .jpeg, .png" />
+              </Form.Item>
+            </Col>
           </Form>
         </div>
         <Edit
@@ -154,7 +195,7 @@ const ArticleAdd: React.FC<{}> = () => {
         />
         <div className="btnbox">
           <Button type="primary" onClick={() => handleSubmit(1)}>
-            提交
+            发布
           </Button>
           <Button type="dashed">预览</Button>
           <Button type="dashed" onClick={() => handleSubmit(2)}>

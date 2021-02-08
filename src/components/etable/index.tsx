@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Divider } from "antd";
+import { Table, Button, Popconfirm, message } from "antd";
 import { IETableProps } from "src/types";
 import EditableCell from "src/components/editable-cell";
 const ArticleTable: React.FC<IETableProps> = ({
@@ -33,18 +33,19 @@ const ArticleTable: React.FC<IETableProps> = ({
       }
     })();
   }, [currentPage, fetchData, pageSize]);
-  const remove = async (id: string) => {
+  async function remove(id: string) {
     const res = await deleteData(id);
     if (res) {
       const newData = [...data];
       const index = newData.findIndex((item) => item._id === id);
       newData.splice(index, 1);
       setData(newData);
-      alert("删除成功");
+      message.success("删除");
     } else {
-      alert("删除失败");
+      message.success("删除失败");
     }
-  };
+  }
+
   const isEditing = (record: any) => false;
   const tableColumns = [
     ...columns,
@@ -55,13 +56,15 @@ const ArticleTable: React.FC<IETableProps> = ({
       render: (_: any, record: any) => {
         const id = record._id;
         return (
-          <span className="t_btn">
+          <div className="btn-groups">
             <Button onClick={() => viewData(id)}>查看</Button>
-            <Divider type="vertical" />
+            <br />
             <Button onClick={() => editData(id)}>修改</Button>
-            <Divider type="vertical" />
-            <Button onClick={() => remove(id)}>删除</Button>
-          </span>
+            <br />
+            <Popconfirm title="确认删除这条数据？" onConfirm={() => remove(id)}>
+              <Button>删除</Button>
+            </Popconfirm>
+          </div>
         );
       },
     },
@@ -79,7 +82,7 @@ const ArticleTable: React.FC<IETableProps> = ({
     };
   });
   return (
-    <div className="p20">
+    <div className="page-content">
       <Table
         bordered
         dataSource={data}

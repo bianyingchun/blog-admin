@@ -2,21 +2,13 @@ import React from "react";
 import { Button, Form, Input } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import "./style.scss";
-import { login } from "src/common/api";
-const Login: React.FC<any> = () => {
-  const handleSubmit = async (values: any) => {
-    const res = await login(values);
-    if (res) {
-      localStorage.setItem("token", res.result.token);
-      localStorage.setItem("refreshtoken", res.result.refreshtoken);
-      window.location.href = "/";
-    }
-  };
+import { login } from "src/common/util/auth";
+const Login: React.FC = () => {
   return (
     <div className="login-wraper">
       <div className="form-wraper">
         <h2>用户登录</h2>
-        <Form onFinish={handleSubmit}>
+        <Form onFinish={login}>
           <Form.Item
             name="username"
             rules={[

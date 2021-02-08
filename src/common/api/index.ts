@@ -22,15 +22,18 @@ import {
 
 // 分页文章列表
 export const getArtilesByPage = (params: IArticlePageParams) =>
-  request("/article/getAll", "get", params);
+  request("/article/list", "get", params);
 //通过id获取文章信息
 export const getArticleById = (id: string) =>
-  request("/article/get", "get", { id });
+  request("/article/detail", "get", { id });
 //文章分组列表
 export const getArticlesByGroup = () => request("/article/group", "get");
 // 新增文章
-export const addArticle = (params: IArticleEditParmas) =>
-  request("/article/add", "post", params);
+export const addArticle = async (params: IArticleEditParmas) => {
+  let addParams = await dealArticleParams(params);
+  if (!addParams) return;
+  return request("/article/add", "post", addParams);
+};
 // 喜欢文章
 export const likeArticle = (id: string) =>
   request("/article/like", "post", { id });
@@ -38,8 +41,11 @@ export const likeArticle = (id: string) =>
 export const deleteArticle = (id: string) =>
   request("/article/delete", "post", { id });
 // 编辑文章
-export const editArticle = (id: string, info: IArticleEditParmas) =>
-  request("/article/edit", "post", { id, info });
+export const editArticle = async (id: string, params: IArticleEditParmas) => {
+  let info = await dealArticleParams(params);
+  if (!info) return;
+  return request("/article/edit", "post", { id, info });
+};
 
 // 添加标签
 export const addTag = (name: string, desc: string = "") =>
@@ -67,7 +73,7 @@ export const likeComment = (id: string) =>
   request("/comment/like", "post", { id });
 //分页获取评论列表,参数有post_id :单篇文章评论list, 无post_id:全量评论列表
 export const getComments = (params: ICommentPageParams) =>
-  request("/comment/get", "get", params);
+  request("/comment/list", "get", params);
 
 // 评论添加回复
 export const addReply = (params: IReplyAddParams) =>
@@ -83,23 +89,74 @@ export const editReply = (id: string, info: IReplyEditParams) =>
 export const likeReply = (id: string) => request("/reply/like", "post", { id });
 //分页获取评论cid回复列表
 export const getReplys = (params: IReplyPageParmas) =>
-  request("/reply/get", "get", params);
+  request("/reply/list", "get", params);
 
 // 上传音乐封面
-export const uploadMusicPoster = (file: File) => {
+export const upload = async (file: File) => {
   const formData = new FormData();
   formData.set("file", file);
-  formData.set("name", file.name);
-  return request("/music/upload", "post", formData);
+  return await request("/service/upload", "post", formData);
 };
-
+const dealArticleParams = async (params: IArticleEditParmas) => {
+  const {
+    title,
+    tags,
+    content,
+    editContent,
+    keywords,
+    desc,
+    origin,
+    thumb,
+    state,
+  } = params;
+  const info = {
+    title,
+    tags,
+    content,
+    editContent,
+    keywords,
+    desc,
+    origin,
+    state,
+  } as any;
+  if (thumb) {
+    if (thumb.text) {
+      info.thumb = thumb.text;
+    } else if (thumb.fileList && thumb.fileList.length) {
+      let res = await upload(thumb.fileList[0]);
+      if (res) {
+        info.thumb = res.result;
+      } else {
+        return;
+      }
+    }
+  }
+  return info;
+};
+const dealProjectParams = async (params: IProjectParams) => {
+  const { title, desc, tags, github, url, preview } = params;
+  const info = { title, desc, tags, github, url } as any;
+  if (preview) {
+    if (preview.text) {
+      info.preview = preview.text;
+    } else if (preview.fileList && preview.fileList.length) {
+      let res = await upload(preview.fileList[0]);
+      if (res) {
+        info.preview = res.result;
+      } else {
+        return;
+      }
+    }
+  }
+  return info;
+};
 const dealMusicParams = async (params: IMusicAddParams) => {
   const { title, url, singer, lyrics, poster } = params;
   let info = { title, url, singer, lyrics } as any;
   if (url.text) {
     info.url = url.text;
-  } else if (url.fileList) {
-    let res = await uploadMusicPoster(url.fileList[0]);
+  } else if (url.fileList && url.fileList.length) {
+    let res = await upload(url.fileList[0]);
     if (res) {
       info.url = res.result;
     } else {
@@ -109,7 +166,7 @@ const dealMusicParams = async (params: IMusicAddParams) => {
   if (poster.text) {
     info.poster = poster.text;
   } else if (poster.fileList) {
-    let res = await uploadMusicPoster(poster.fileList[0]);
+    let res = await upload(poster.fileList[0]);
     if (res) {
       info.poster = res.result;
     } else {
@@ -132,27 +189,34 @@ export const editMusic = async (id: string, params: IMusicAddParams) => {
 export const deleteMusic = (id: string) =>
   request("/muisc/delete", "post", { id });
 
-export const getMusicById = (id: string) => request("music/get", "get", { id });
+export const getMusicById = (id: string) =>
+  request("music/detail", "get", { id });
 
 export const getMusicList = (params: IMusicPageParams) =>
-  request("/music/getAll", "get", params);
+  request("/music/list", "get", params);
 
 // ================项目=========
 
-export const addProject = (params: IProjectParams) =>
-  request("/project/add", "post", params);
+export const addProject = async (params: IProjectParams) => {
+  let addParams = await dealProjectParams(params);
+  if (!addParams) return;
+  return request("/project/add", "post", params);
+};
 // 删除
 export const deleteProject = (id: string) =>
   request("/project/delete", "post", { id });
 // 编辑
-export const editProject = (id: string, info: IProjectParams) =>
-  request("/project/edit", "post", { id, info });
+export const editProject = async (id: string, params: IProjectParams) => {
+  let info = await dealProjectParams(params);
+  if (!info) return;
+  return request("/project/edit", "post", { id, info });
+};
 //
 export const getProjectById = (id: string) =>
-  request("/project/get", "get", { id });
+  request("/project/detail", "get", { id });
 
 export const getProjectList = (params: IProjectPageParams) =>
-  request("/project/getAll", "get", params);
+  request("/project/list", "get", params);
 
 // ==============留言==================
 
@@ -174,3 +238,5 @@ export const getAllMessage = () => request("/message/all", "get");
 
 export const login = (params: ILoginParams) =>
   request("/user/login", "post", params);
+
+export const getUserInfo = () => request("/user/info", "get");

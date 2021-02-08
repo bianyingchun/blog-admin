@@ -28,10 +28,13 @@ instance.interceptors.response.use(
         isRefresh = true;
         return refreshToken()
           .then((res) => {
-            const { token } = res.result;
+            const { token, refreshtoken } = res.result;
             localStorage.setItem("token", token);
+            localStorage.setItem("refreshtoken", refreshtoken);
             // 已经刷新了token，将所有队列中的请求进行重试
-            requests.forEach((cb: any) => cb(token));
+            requests.forEach((cb: any) => {
+              cb(token);
+            });
             requests = [];
             return instance(config);
           })
@@ -45,7 +48,7 @@ instance.interceptors.response.use(
         // 正在刷新token，将返回一个未执行resolve的promise
         return new Promise((resolve) => {
           // 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
-          requests.push((token: string) => {
+          requests.push(() => {
             config.baseURL = "";
             resolve(instance(config));
           });

@@ -4,7 +4,6 @@ import { IRouterViewProps, IRouteItem } from "src/types";
 import loadable from "src/common/util/loadable";
 const Layout = loadable(() => import("src/pages/layout"));
 const Login = loadable(() => import("src/pages/login"));
-const Logout = loadable(() => import("src/pages/logout"));
 const ArticleAdd = loadable(() => import("src/pages/article-add"));
 const ArticleList = loadable(() => import("src/pages/article-list"));
 const ArticleComments = loadable(() => import("src/pages/article-comments"));
@@ -19,27 +18,18 @@ const MusicList = loadable(() => import("src/pages/music-list"));
 const MusicAdd = loadable(() => import("src/pages/music-add"));
 const MessageList = loadable(() => import("src/pages/message-list"));
 const MessageAdd = loadable(() => import("src/pages/message-add"));
-// 测试页面
-const Test = loadable(() => import("src/pages/test"));
+
 export const routes: Array<IRouteItem> = [
-  {
-    path: "/test",
-    component: Test,
-  },
   {
     path: "/login",
     component: Login,
-  },
-  {
-    path: "/logout",
-    component: Logout,
   },
   {
     path: "/",
     component: Layout,
     routes: [
       {
-        path: "/article",
+        path: "/article-list",
         component: ArticleList,
       },
       {
@@ -63,7 +53,7 @@ export const routes: Array<IRouteItem> = [
         component: ArticleReplies,
       },
       {
-        path: "/tags",
+        path: "/tag-list",
         component: Tags,
       },
       {
@@ -71,7 +61,7 @@ export const routes: Array<IRouteItem> = [
         component: TagAdd,
       },
       {
-        path: "/projects",
+        path: "/project-list",
         component: ProjectList,
       },
       {
@@ -83,7 +73,7 @@ export const routes: Array<IRouteItem> = [
         component: ProjectAdd,
       },
       {
-        path: "/musics",
+        path: "/music-list",
         component: MusicList,
       },
       {
@@ -95,7 +85,7 @@ export const routes: Array<IRouteItem> = [
         component: MusicAdd,
       },
       {
-        path: "/messages",
+        path: "/message-list",
         component: MessageList,
       },
       {

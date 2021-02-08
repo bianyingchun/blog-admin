@@ -15,20 +15,12 @@ export interface IRouteItem {
 
 export interface IWithSubRoutesProps extends IRouteItem, RouteComponentProps {}
 
-export interface IMainProps {
-  routes?: Array<IRouteItem>;
-}
-
-export interface IMenuProps {
-  collapsed: boolean;
-}
-
-export interface menuType {
+export interface MenuType {
   title: string;
   key: string;
   icon?: any;
   path?: string;
-  children?: menuType[];
+  children?: MenuType[];
 }
 
 export interface IEditProps {
@@ -105,7 +97,7 @@ export interface IVisitor {
 export interface IMessageItem {
   _id: string;
   content: string;
-  author: IVisitor;
+  from: IVisitor;
   state: number;
   create_at: Date;
   update_at: Date;

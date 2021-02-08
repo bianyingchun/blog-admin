@@ -1,6 +1,5 @@
-import {IMusicItem} from "src/types";
+import { IMusicItem } from "src/types";
 import React from "react";
-import { STATIC_URL } from "src/common/constant";
 import moment from "moment";
 
 export default [
@@ -34,13 +33,19 @@ export default [
     key: "poster",
     dataIndex: "poster",
     render: (poster: string) => {
-      return <img src={STATIC_URL + poster} alt="海报" style={{width:'50px', height:'50px', objectFit:'cover'}}/>;
+      return (
+        <img
+          src={poster}
+          alt="海报"
+          style={{ width: "50px", height: "50px", objectFit: "cover" }}
+        />
+      );
     },
   },
   {
-    title: '链接',
-    key: 'url',
-    dataIndex: 'url',
+    title: "链接",
+    key: "url",
+    dataIndex: "url",
     // render: (url: string) => {
     //   return (<a href={STATIC_URL + url}>{STATIC_URL + url}</a>)
     // }
