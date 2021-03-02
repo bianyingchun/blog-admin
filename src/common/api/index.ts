@@ -108,6 +108,7 @@ const dealArticleParams = async (params: IArticleEditParmas) => {
     origin,
     thumb,
     state,
+    create_at,
   } = params;
   const info = {
     title,
@@ -118,6 +119,7 @@ const dealArticleParams = async (params: IArticleEditParmas) => {
     desc,
     origin,
     state,
+    create_at,
   } as any;
   if (thumb) {
     if (thumb.text) {

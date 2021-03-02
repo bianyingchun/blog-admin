@@ -20,9 +20,15 @@ const Page: React.FC<IWithSubRoutesProps> = ({ routes }) => {
   const [collapsed, setCollapsed] = React.useState<boolean>(false);
   const location = useLocation();
   const history = useHistory();
+  const [logined, setLogined] = useState(false);
   useEffect(() => {
-    checkLogin();
-  }, []);
+    (async () => {
+      if (!logined) {
+        const result = await checkLogin();
+        setLogined(result);
+      }
+    })();
+  }, [logined]);
   useEffect(() => {
     let key = location.pathname.substring(1) || "home";
     setOpenKeys([key.split("-")[0]]);

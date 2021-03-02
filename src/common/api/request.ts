@@ -1,3 +1,4 @@
+import { BASE_NAME } from "src/common/constant";
 import axios from "axios";
 import { API_CONFIG } from "../constant";
 type TAxiosMethod = "get" | "GET" | "POST" | "post";
@@ -39,7 +40,7 @@ instance.interceptors.response.use(
             return instance(config);
           })
           .catch((res) => {
-            window.location.href = "/login";
+            window.location.href = "/" + BASE_NAME + "/login";
           })
           .finally(() => {
             isRefresh = false;
@@ -61,7 +62,7 @@ instance.interceptors.response.use(
     const code = err.response.status;
     if (code === 401 || code === 403) {
       //重新登录
-      return (window.location.href = "/login");
+      window.location.href = "/" + BASE_NAME + "/login";
     }
     Promise.reject(err);
   }

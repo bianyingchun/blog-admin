@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Button, message, Form, Input, Col, Select } from "antd";
+import { Button, message, Form, Input, Col, Select, DatePicker } from "antd";
 import "./style.scss";
 import Edit from "./edit";
 import { useLocation, useParams, useHistory } from "react-router-dom";
 import InputUpload from "src/components/input-upload";
-
+import moment from "moment";
 import {
   addArticle,
   getTags,
@@ -13,6 +13,7 @@ import {
 } from "src/common/api";
 import { ITagItem } from "src/types";
 import { ARTICLE_TYPES } from "src/common/constant";
+moment.locale("zh_CN");
 const { Option } = Select;
 
 const ArticleAdd: React.FC<{}> = () => {
@@ -33,6 +34,7 @@ const ArticleAdd: React.FC<{}> = () => {
     keywords: "",
     tags: [],
     type: 0,
+    create_at: moment(new Date(), "YYYY-MM-DD HH:mm"),
     thumb: {
       text: "",
       fileList: [],
@@ -57,12 +59,14 @@ const ArticleAdd: React.FC<{}> = () => {
               state,
               type = 0,
               thumb = "",
+              create_at = new Date(),
             } = res.result;
             let values = {
               title,
               desc,
               keywords,
               type,
+              create_at: moment(create_at, "YYYY-MM-DD HH:mm"),
               thumb: { text: thumb, fileList: [] },
               tags: tags.map((item: ITagItem) => item._id),
             };
@@ -92,6 +96,7 @@ const ArticleAdd: React.FC<{}> = () => {
   };
   const handleFormFinish = async (values: any) => {
     const info = { ...values, ...articleContent, state: articleState };
+    info.create_at = info.create_at.toDate();
     if (isEditArticle) {
       let res = await editArticle(param.id, info);
       if (res) {
@@ -185,6 +190,11 @@ const ArticleAdd: React.FC<{}> = () => {
             <Col span={12}>
               <Form.Item name="thumb" label="预览图">
                 <InputUpload accept=".jpg, .jpeg, .png" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="create_at" label="日期">
+                <DatePicker showTime format="YYYY-MM-DD HH:mm" />
               </Form.Item>
             </Col>
           </Form>

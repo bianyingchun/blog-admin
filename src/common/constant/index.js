@@ -1,6 +1,10 @@
+const mode = process.env.NODE_ENV || "development";
+const isDev = mode === 'development';
+export const BASE_NAME = 'admin'
 export const API_CONFIG = {
-  BASE_URL: "http://localhost:3030",
+  BASE_URL: isDev ? "http://localhost:3030/api" : "http://blog.bianyc.xyz/api",
 };
+export const APP_URL = isDev ? "http://localhost:3000/admin" : 'http://blog.bianyc.xyz/admin'
 
 export const STATIC_URL = "http://qa68vnk5w.bkt.clouddn.com/";
 

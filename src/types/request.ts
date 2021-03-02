@@ -22,6 +22,7 @@ export interface IArticleEditParmas {
   origin: number;
   state?: number;
   thumb?: IInputUploadValue;
+  create_at: Date;
 }
 
 export interface ITagEditParams {

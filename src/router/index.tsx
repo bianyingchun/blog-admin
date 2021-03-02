@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { IRouterViewProps, IRouteItem } from "src/types";
 import loadable from "src/common/util/loadable";
+import { BASE_NAME } from "src/common/constant";
 const Layout = loadable(() => import("src/pages/layout"));
 const Login = loadable(() => import("src/pages/login"));
 const ArticleAdd = loadable(() => import("src/pages/article-add"));
@@ -113,7 +114,7 @@ export function RouteWithSubRoutes(route: IRouteItem) {
 
 export default function (props: IRouterViewProps) {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={BASE_NAME}>
       <Switch>
         {routes.map((route, i) => (
           <RouteWithSubRoutes key={i} {...route} {...props} />
