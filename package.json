@@ -10,7 +10,7 @@
     "cache-loader": "^4.1.0",
     "comment": "^0.0.2",
     "compression-webpack-plugin": "1.1.12",
-    "markdown-it": "^10.0.0",
+    "markdown-it": "^12.3.2",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.5",
     "react-dom": "^16.13.1",
