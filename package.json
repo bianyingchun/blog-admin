@@ -6,7 +6,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.0.6",
     "antd": "^4.1.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "cache-loader": "^4.1.0",
     "comment": "^0.0.2",
     "compression-webpack-plugin": "1.1.12",
